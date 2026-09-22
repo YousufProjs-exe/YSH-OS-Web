@@ -1,0 +1,27 @@
+
+/* WELcoME PAGE STYLE START */
+body{
+    background-image: url(/images/OS\ background.png);
+    /* background-position: center; */
+
+    color: rgba(10, 102, 177, 0.644);
+
+    padding-top: 100px; 
+    margin-top: 100px;
+
+}
+
+.Welcome{
+    margin: auto;
+    padding: 50px;
+}
+
+p1 {
+    position: fixed;
+    left: 30px;
+    bottom: 25px;
+
+    color: gray;
+    cursor: pointer;
+}
+/* WELCOME PAGE (done at 6:58pm) */

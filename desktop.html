@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="desktop.css">
+
+    <title>YSH OS</title>
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <p class="username">
+            Yousuf
+        </p>
+
+        <p class="osname">
+            YSH OS
+        </p>
+
+        <p id="timeElement">
+            Time
+        </p>
+
+    </div>
+
+
+    <!-- DESKTOP -->
+
+    <div class="desktop">
+
+        <div class="desktop-note">
+            YSH OS
+        </div>
+
+    </div>
+
+
+    <!-- WINDOW -->
+
+    <div class="window" id="welcome">
+
+        <div class="windowheader" id="welcomeheader">
+
+            <p class="headertext">
+                YSH OS
+            </p>
+
+            <p class="closebutton" id="welcomeclose">
+                ×
+            </p>
+
+        </div>
+
+        <div class="windowcontent">
+
+            <h2>Welcome to YSH OS</h2>
+
+            <p>
+                A small web-based operating system built by Yousuf.
+            </p>
+
+            <p>
+                Drag this window using the header.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- OPEN WINDOW -->
+
+    <p class="openbutton" id="welcomeopen">
+        YSH OS
+    </p>
+
+    <!-- APP DOCK -->
+    <div class="app-dock">
+    
+        <button onclick="openApp('terminal')">
+            Terminal
+        </button>
+    
+        <button onclick="openApp('notes')">
+            Notes
+        </button>
+    
+        <button onclick="openApp('taskmanager')">
+            Task Manager
+        </button>
+    
+    </div>
+    
+    
+    <!-- TERMINAL -->
+    
+    <div class="app-window" id="terminal">
+    
+        <div class="app-header" id="terminalheader">
+            <span>YSH Terminal</span>
+        
+            <button onclick="closeApp('terminal')">
+                ×
+            </button>
+        </div>
+    
+        <div class="terminal-content">
+        
+            <p>YSH Terminal</p>
+            <p>Type <b>help</b> to see available commands.</p>
+        
+            <div class="terminal-line">
+                <span>yousuf@ysh:~$</span>
+                <input id="terminalInput" autocomplete="off">
+            </div>
+        
+            <div id="terminalOutput"></div>
+        
+        </div>
+    
+    </div>
+    
+    
+    <!-- NOTES -->
+    
+    <div class="app-window" id="notes">
+    
+        <div class="app-header" id="notesheader">
+            <span>Notes</span>
+        
+            <button onclick="closeApp('notes')">
+                ×
+            </button>
+        </div>
+    
+        <textarea
+            class="notes-area"
+            placeholder="Write something..."></textarea>
+    
+    </div>
+    
+    
+    <!-- TASK MANAGER -->
+    
+    <div class="app-window" id="taskmanager">
+    
+        <div class="app-header" id="taskmanagerheader">
+            <span>Task Manager</span>
+        
+            <button onclick="closeApp('taskmanager')">
+                ×
+            </button>
+        </div>
+    
+        <div class="task-list">
+        
+            <p>
+                <span>YSH OS</span>
+                <span>Running</span>
+            </p>
+        
+            <p>
+                <span>Desktop</span>
+                <span>Running</span>
+            </p>
+        
+            <p>
+                <span>System Clock</span>
+                <span>Running</span>
+            </p>
+        
+        </div>
+    
+    </div>
+
+    <script src="desktop.js"></script>
+
+</body>
+
+</html>
