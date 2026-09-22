@@ -3,57 +3,93 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
 body {
     margin: 0;
-
-    height: 100vh;
 
     overflow: hidden;
 
     font-family: Arial, Helvetica, sans-serif;
 
-    background-image: url("/images/OS background.png");
-    background-size: cover;
-    background-position: center;
+    color: white;
+
+    background:
+        #050505
+        url("images/OS background.png")
+        center / cover
+        no-repeat
+        fixed;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    color: white;
 }
 
 
 /* TOP BAR */
 
 .topbar {
-    position: absolute;
+    position: fixed;
 
     top: 0;
     left: 0;
 
     width: 100%;
+    height: 48px;
 
-    display: flex;
-    justify-content: space-between;
+    padding: 8px 16px;
+
+    display: grid;
+
+    grid-template-columns: 1fr auto 1fr;
+
     align-items: center;
 
-    padding: 10px 16px;
+    background: rgba(0, 0, 0, 0.28);
 
-    color: white;
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.12);
 
-    background-color: rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(6px);
 
-    backdrop-filter: blur(10px);
-
-    z-index: 10;
+    z-index: 1000;
 }
 
-.topbar p {
-    margin: 0;
+.user-pill {
+    justify-self: start;
+}
 
-    padding: 5px 12px;
+.os-pill {
+    justify-self: center;
+}
+
+.time-pill {
+    justify-self: end;
+}
+
+.user-pill,
+.os-pill,
+.time-pill {
+    padding: 4px 10px;
 
     border-radius: 14px;
 
-    background-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.12);
 }
 
-.username {
+.user-pill {
     font-weight: bold;
 }
 
@@ -61,126 +97,10 @@ body {
 /* DESKTOP */
 
 .desktop {
-    height: 100vh;
-
-    padding-top: 70px;
-    padding-left: 20px;
-}
-
-.desktop-note {
-    color: rgba(255, 255, 255, 0.7);
-
-    font-size: 14px;
-}
-
-
-/* WINDOW */
-
-.window {
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-    width: 430px;
-
-    display: flex;
-    flex-direction: column;
-
-    border: 1px solid rgba(255, 255, 255, 0.45);
-
-    border-radius: 10px;
-
-    background-color: rgba(0, 0, 0, 0.25);
-
-    backdrop-filter: blur(8px);
-
-    color: white;
-}
-
-
-/* WINDOW HEADER */
-
-.windowheader {
     width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding: 8px 12px;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-
-    cursor: grab;
-
-    user-select: none;
+    height: 100%;
 }
 
-.headertext {
-    margin: 0;
-
-    font-weight: bold;
-}
-
-
-/* CLOSE */
-
-.closebutton {
-    margin: 0;
-
-    cursor: pointer;
-
-    font-size: 20px;
-}
-
-.closebutton:hover {
-    opacity: 0.6;
-}
-
-
-/* WINDOW CONTENT */
-
-.windowcontent {
-    padding: 20px;
-
-    line-height: 1.5;
-}
-
-.windowcontent h2 {
-    margin-top: 0;
-}
-
-
-/* OPEN */
-
-.openbutton {
-    position: absolute;
-
-    left: 20px;
-    bottom: 20px;
-
-    margin: 0;
-
-    padding: 8px 12px;
-
-    color: white;
-
-    background-color: rgba(0, 0, 0, 0.3);
-
-    border: 1px solid rgba(255, 255, 255, 0.3);
-
-    border-radius: 6px;
-
-    cursor: pointer;
-}
-
-.openbutton:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-}
 
 /* APP DOCK */
 
@@ -188,69 +108,117 @@ body {
     position: fixed;
 
     left: 50%;
-    bottom: 20px;
+    bottom: 16px;
 
     transform: translateX(-50%);
 
     display: flex;
-    gap: 8px;
 
-    padding: 8px;
+    gap: 6px;
 
-    background: rgba(0, 0, 0, 0.35);
+    padding: 6px;
 
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.30);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.20);
 
     border-radius: 8px;
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(6px);
 
-    z-index: 20;
+    z-index: 1000;
 }
 
 .app-dock button {
-    padding: 7px 12px;
+    padding: 6px 10px;
 
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.18);
 
     border-radius: 5px;
 
-    background: rgba(255, 255, 255, 0.08);
-
-    color: white;
+    background: rgba(255, 255, 255, 0.06);
 
     cursor: pointer;
 }
 
 .app-dock button:hover {
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.14);
 }
 
 
-/* APP WINDOWS */
+/* WINDOWS */
 
-.app-window {
+.window {
     position: absolute;
 
     display: none;
 
-    width: 450px;
+    width: 500px;
 
-    background: rgba(0, 0, 0, 0.5);
-
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.40);
 
     border-radius: 8px;
 
-    color: white;
+    background: rgba(0, 0, 0, 0.48);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(7px);
 
-    z-index: 30;
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.20);
+
+    z-index: 10;
 }
 
-.app-header {
-    height: 42px;
+
+/* WINDOW POSITIONS */
+
+.welcome-window {
+    top: 150px;
+    left: 210px;
+}
+
+.terminal-window {
+    top: 110px;
+    left: 760px;
+
+    width: 520px;
+}
+
+.notes-window {
+    top: 420px;
+    left: 270px;
+
+    width: 420px;
+}
+
+.browser-window {
+    top: 95px;
+    left: 330px;
+
+    width: 760px;
+}
+
+.task-window {
+    top: 360px;
+    left: 790px;
+
+    width: 560px;
+}
+
+
+/* WINDOW HEADER */
+
+.window-header {
+    height: 40px;
+
+    padding: 0 10px 0 13px;
 
     display: flex;
 
@@ -258,52 +226,151 @@ body {
 
     justify-content: space-between;
 
-    padding: 0 10px;
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.22);
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-
-    cursor: move;
+    cursor: grab;
 
     user-select: none;
 }
 
-.app-header button {
-    border: none;
+.window-header:active {
+    cursor: grabbing;
+}
+
+
+/* CLOSE BUTTON */
+
+.close-button {
+    width: 28px;
+    height: 28px;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 4px;
 
     background: transparent;
 
-    color: white;
+    cursor: pointer;
 
-    font-size: 20px;
+    font-size: 18px;
+}
+
+.close-button:hover {
+    background:
+        rgba(255, 255, 255, 0.10);
+}
+
+
+/* WINDOW CONTENT */
+
+.window-content,
+.terminal-content {
+    padding: 18px;
+}
+
+.window h1 {
+    margin-top: 0;
+
+    font-size: 22px;
+}
+
+.hint {
+    color: #c0c0c0;
+
+    font-size: 14px;
+}
+
+
+/* NAME FORM */
+
+.name-form {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 20px;
+}
+
+.name-form input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 8px 10px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.20);
+
+    border-radius: 5px;
+
+    outline: none;
+
+    background:
+        rgba(0, 0, 0, 0.30);
+
+    color: white;
+}
+
+.name-form button {
+    padding: 8px 12px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.20);
+
+    border-radius: 5px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
 
     cursor: pointer;
+}
+
+.name-form button:hover {
+    background:
+        rgba(255, 255, 255, 0.15);
 }
 
 
 /* TERMINAL */
 
-#terminal {
-    top: 130px;
-    left: 150px;
-}
+.terminal-output {
+    min-height: 70px;
 
-.terminal-content {
-    padding: 15px;
+    max-height: 150px;
+
+    margin: 14px 0;
+
+    overflow-y: auto;
 
     font-family: monospace;
+
+    white-space: pre-wrap;
 }
 
 .terminal-line {
     display: flex;
 
-    gap: 8px;
+    align-items: center;
+
+    gap: 4px;
+
+    font-family: monospace;
 }
 
 .terminal-line input {
     flex: 1;
 
-    border: none;
-    outline: none;
+    min-width: 0;
+
+    border: 0;
+
+    outline: 0;
 
     background: transparent;
 
@@ -315,50 +382,167 @@ body {
 
 /* NOTES */
 
-#notes {
-    top: 180px;
-    left: 300px;
+.notes-content {
+    padding: 12px;
 }
 
-.notes-area {
+.notes-content textarea {
     width: 100%;
-
-    height: 280px;
-
-    padding: 15px;
+    height: 260px;
 
     resize: none;
 
-    border: none;
-    outline: none;
+    border: 0;
+
+    outline: 0;
 
     background: transparent;
 
     color: white;
+}
 
-    font-family: Arial, Helvetica, sans-serif;
+
+/* BROWSER */
+
+.browser-content {
+    padding: 14px;
+}
+
+.browser-search {
+    display: flex;
+
+    gap: 6px;
+}
+
+.browser-search input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 8px 10px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.20);
+
+    border-radius: 5px;
+
+    outline: none;
+
+    background:
+        rgba(0, 0, 0, 0.35);
+
+    color: white;
+}
+
+.browser-search button {
+    padding: 8px 12px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.20);
+
+    border-radius: 5px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    cursor: pointer;
+}
+
+.browser-search button:hover {
+    background:
+        rgba(255, 255, 255, 0.14);
+}
+
+.browser-home {
+    margin-top: 20px;
+
+    padding: 25px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 6px;
+
+    background:
+        rgba(0, 0, 0, 0.18);
+}
+
+.browser-home h2 {
+    margin-top: 0;
+}
+
+.browser-home p {
+    color: #c0c0c0;
 }
 
 
 /* TASK MANAGER */
 
-#taskmanager {
-    top: 220px;
-    left: 450px;
+.task-table {
+    width: 100%;
+
+    border-collapse: collapse;
 }
 
-.task-list {
-    padding: 15px;
-}
-
-.task-list p {
-    display: flex;
-
-    justify-content: space-between;
-
+.task-table th,
+.task-table td {
     padding: 8px;
 
-    margin: 5px 0;
+    text-align: left;
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.14);
+}
+
+.task-table th {
+    font-weight: normal;
+
+    color: #c9c9c9;
+}
+
+.task-table button {
+    padding: 4px 8px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.18);
+
+    border-radius: 4px;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    cursor: pointer;
+}
+
+.task-table button:hover {
+    background:
+        rgba(255, 255, 255, 0.14);
+}
+
+
+/* SMALL SCREENS */
+
+@media (max-width: 900px) {
+
+    .window {
+        width: calc(100vw - 30px);
+
+        left: 15px !important;
+    }
+
+    .browser-window {
+        top: 70px;
+    }
+
+    .app-dock {
+        max-width: calc(100vw - 20px);
+
+        overflow-x: auto;
+    }
+
 }

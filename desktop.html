@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,37 +14,46 @@
 <body>
 
     <!-- TOP BAR -->
+
     <div class="topbar">
 
-        <span class="user-pill" id="userName">User</span>
+        <span class="user-pill" id="userName">
+            User
+        </span>
 
-        <span class="os-pill">YSH OS</span>
+        <span class="os-pill">
+            YSH OS
+        </span>
 
-        <span class="time-pill" id="timeElement">00:00:00</span>
+        <span class="time-pill" id="timeElement">
+            00:00:00
+        </span>
 
     </div>
 
 
     <!-- DESKTOP -->
+
     <main class="desktop"></main>
 
 
     <!-- APP DOCK -->
+
     <div class="app-dock">
 
-        <button data-open="terminalWindow">
-            Terminal
+        <button type="button" data-open="terminalWindow">
+            YSH - Terminal
         </button>
 
-        <button data-open="notesWindow">
+        <button type="button" data-open="notesWindow">
             Notes
         </button>
 
-        <button data-open="browserWindow">
-            Browser
+        <button type="button" data-open="browserWindow">
+            ARC - Browser
         </button>
 
-        <button data-open="taskManagerWindow">
+        <button type="button" data-open="taskManagerWindow">
             Task Manager
         </button>
 
@@ -51,31 +61,62 @@
 
 
     <!-- WELCOME WINDOW -->
-    <section class="window welcome-window" id="welcomeWindow">
 
-        <div class="window-header" id="welcomeWindowheader">
+    <section
+        class="window welcome-window"
+        id="welcomeWindow"
+    >
 
-            <span>YSH OS</span>
+        <div
+            class="window-header"
+            id="welcomeWindowheader"
+        >
+
+            <span>
+                YSH OS
+            </span>
 
             <button
                 class="close-button"
-                data-close="welcomeWindow">
+                type="button"
+                data-close="welcomeWindow"
+                aria-label="Close"
+            >
                 ×
             </button>
 
         </div>
 
+
         <div class="window-content">
 
-            <h1>Welcome to YSH OS</h1>
+            <h1 id="welcomeTitle">
+                Welcome to YSH OS
+            </h1>
 
-            <p>
-                Welcome to your desktop.
+            <p id="welcomeMessage">
+                Before you begin, what's your name?
             </p>
 
-            <p class="hint">
-                Drag this window by its header.
-            </p>
+
+            <div class="name-form">
+
+                <input
+                    type="text"
+                    id="userNameInput"
+                    placeholder="Enter your name"
+                    maxlength="30"
+                    autocomplete="name"
+                >
+
+                <button
+                    type="button"
+                    id="saveNameButton"
+                >
+                    Continue
+                </button>
+
+            </div>
 
         </div>
 
@@ -83,36 +124,55 @@
 
 
     <!-- TERMINAL -->
-    <section class="window terminal-window" id="terminalWindow">
 
-        <div class="window-header" id="terminalWindowheader">
+    <section
+        class="window terminal-window"
+        id="terminalWindow"
+    >
 
-            <span>YSH Terminal</span>
+        <div
+            class="window-header"
+            id="terminalWindowheader"
+        >
+
+            <span>
+                YSH Terminal
+            </span>
 
             <button
                 class="close-button"
-                data-close="terminalWindow">
+                type="button"
+                data-close="terminalWindow"
+                aria-label="Close"
+            >
                 ×
             </button>
 
         </div>
 
+
         <div class="terminal-content">
 
-            <div>YSH Terminal</div>
+            <div>
+                YSH Terminal
+            </div>
 
             <div class="hint">
                 Type <strong>help</strong> for commands.
             </div>
 
+
             <div
                 class="terminal-output"
-                id="terminalOutput">
-            </div>
+                id="terminalOutput"
+            ></div>
+
 
             <div class="terminal-line">
 
-                <span id="terminalUser">user</span>@ysh:~$
+                <span id="terminalUser">
+                    user
+                </span>@ysh:~$
 
                 <input
                     id="terminalInput"
@@ -127,26 +187,39 @@
 
 
     <!-- NOTES -->
-    <section class="window notes-window" id="notesWindow">
 
-        <div class="window-header" id="notesWindowheader">
+    <section
+        class="window notes-window"
+        id="notesWindow"
+    >
 
-            <span>Notes</span>
+        <div
+            class="window-header"
+            id="notesWindowheader"
+        >
+
+            <span>
+                Notes
+            </span>
 
             <button
                 class="close-button"
-                data-close="notesWindow">
+                type="button"
+                data-close="notesWindow"
+                aria-label="Close"
+            >
                 ×
             </button>
 
         </div>
 
+
         <div class="window-content notes-content">
 
             <textarea
                 id="notesArea"
-                placeholder="Write something...">
-            </textarea>
+                placeholder="Write something..."
+            ></textarea>
 
         </div>
 
@@ -154,25 +227,39 @@
 
 
     <!-- BROWSER -->
-    <section class="window browser-window" id="browserWindow">
 
-        <div class="window-header" id="browserWindowheader">
+    <section
+        class="window browser-window"
+        id="browserWindow"
+    >
 
-            <span>Browser</span>
+        <div
+            class="window-header"
+            id="browserWindowheader"
+        >
+
+            <span>
+                ARC - Browser
+            </span>
 
             <button
                 class="close-button"
-                data-close="browserWindow">
+                type="button"
+                data-close="browserWindow"
+                aria-label="Close"
+            >
                 ×
             </button>
 
         </div>
 
+
         <div class="browser-content">
 
             <form
                 id="browserForm"
-                class="browser-search">
+                class="browser-search"
+            >
 
                 <input
                     id="browserInput"
@@ -185,19 +272,20 @@
                     Search
                 </button>
 
-                <button
-                    type="button"
-                    id="browserNewTab">
-                    ↗
-                </button>
-
             </form>
 
-            <iframe
-                id="browserFrame"
-                title="Google Search"
-                src="https://www.google.com/webhp?igu=1">
-            </iframe>
+
+            <div class="browser-home">
+
+                <h2>
+                    Google
+                </h2>
+
+                <p>
+                    Search the web with Google.
+                </p>
+
+            </div>
 
         </div>
 
@@ -205,19 +293,32 @@
 
 
     <!-- TASK MANAGER -->
-    <section class="window task-window" id="taskManagerWindow">
 
-        <div class="window-header" id="taskManagerWindowheader">
+    <section
+        class="window task-window"
+        id="taskManagerWindow"
+    >
 
-            <span>Task Manager</span>
+        <div
+            class="window-header"
+            id="taskManagerWindowheader"
+        >
+
+            <span>
+                Task Manager
+            </span>
 
             <button
                 class="close-button"
-                data-close="taskManagerWindow">
+                type="button"
+                data-close="taskManagerWindow"
+                aria-label="Close"
+            >
                 ×
             </button>
 
         </div>
+
 
         <div class="window-content">
 
@@ -226,12 +327,23 @@
                 <thead>
 
                     <tr>
-                        <th>Window</th>
-                        <th>Status</th>
-                        <th></th>
+
+                        <th>
+                            Window
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
                     </tr>
 
                 </thead>
+
 
                 <tbody id="taskManagerBody"></tbody>
 
@@ -245,4 +357,5 @@
     <script src="desktop.js"></script>
 
 </body>
+
 </html>

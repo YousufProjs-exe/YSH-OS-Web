@@ -1,224 +1,758 @@
 
-// TIME
+// USER NAME
+
+var userName =
+    localStorage.getItem("yshUserName") || "";
+
+var userNameInput =
+    document.getElementById("userNameInput");
+
+var saveNameButton =
+    document.getElementById("saveNameButton");
+
+var welcomeTitle =
+    document.getElementById("welcomeTitle");
+
+var welcomeMessage =
+    document.getElementById("welcomeMessage");
+
+
+function updateUserDisplay() {
+
+    var displayName =
+        userName || "User";
+
+    document.getElementById("userName").textContent =
+        displayName;
+
+    document.getElementById("terminalUser").textContent =
+        displayName.toLowerCase();
+
+
+    if (userName) {
+
+        welcomeTitle.textContent =
+            "Welcome back, " + userName;
+
+        welcomeMessage.textContent =
+            "Your YSH OS desktop is ready.";
+
+        userNameInput.value =
+            userName;
+
+    }
+
+}
+
+
+updateUserDisplay();
+
+
+saveNameButton.addEventListener(
+    "click",
+    saveName
+);
+
+
+userNameInput.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Enter") {
+            saveName();
+        }
+
+    }
+);
+
+
+function saveName() {
+
+    var enteredName =
+        userNameInput.value.trim();
+
+
+    if (!enteredName) {
+
+        userNameInput.focus();
+
+        return;
+
+    }
+
+
+    userName =
+        enteredName;
+
+
+    localStorage.setItem(
+        "yshUserName",
+        userName
+    );
+
+
+    updateUserDisplay();
+
+
+    closeWindow(
+        "welcomeWindow"
+    );
+
+}
+
+
+// CLOCK
 
 function updateTime() {
 
-    var currentTime = new Date().toLocaleTimeString();
-
-    var timeText = document.querySelector("#timeElement");
-
-    timeText.innerHTML = currentTime;
+    document.getElementById(
+        "timeElement"
+    ).textContent =
+        new Date().toLocaleTimeString();
 
 }
 
 updateTime();
 
-setInterval(updateTime, 1000);
+setInterval(
+    updateTime,
+    1000
+);
 
 
-// WINDOW
+// WINDOWS
 
-var welcomeScreen = document.querySelector("#welcome");
+var windowIds = [
+
+    "welcomeWindow",
+    "terminalWindow",
+    "notesWindow",
+    "browserWindow",
+    "taskManagerWindow"
+
+];
 
 
-// DRAG WINDOW
+var windowNames = {
 
-dragElement(welcomeScreen);
+    welcomeWindow:
+        "YSH OS",
+
+    terminalWindow:
+        "YSH Terminal",
+
+    notesWindow:
+        "Notes",
+
+    browserWindow:
+        "ARC - Browser",
+
+    taskManagerWindow:
+        "Task Manager"
+
+};
+
+
+var nextZIndex = 20;
+
+
+function getWindow(id) {
+
+    return document.getElementById(id);
+
+}
+
+
+function focusWindow(id) {
+
+    var element =
+        getWindow(id);
+
+
+    if (!element) {
+        return;
+    }
+
+
+    nextZIndex++;
+
+
+    element.style.zIndex =
+        nextZIndex;
+
+}
+
+
+function openWindow(id) {
+
+    var element =
+        getWindow(id);
+
+
+    if (!element) {
+        return;
+    }
+
+
+    element.style.display =
+        "block";
+
+
+    focusWindow(id);
+
+
+    updateTaskManager();
+
+}
+
+
+function closeWindow(id) {
+
+    var element =
+        getWindow(id);
+
+
+    if (!element) {
+        return;
+    }
+
+
+    element.style.display =
+        "none";
+
+
+    updateTaskManager();
+
+}
+
+
+// DRAGGING
 
 function dragElement(element) {
 
-    var initialX = 0;
-    var initialY = 0;
-
-    var currentX = 0;
-    var currentY = 0;
-
-
-    if (document.getElementById(element.id + "header")) {
-
+    var header =
         document.getElementById(
             element.id + "header"
-        ).onmousedown = startDragging;
+        );
 
-    }
 
-    else {
-
-        element.onmousedown = startDragging;
-
+    if (!header) {
+        return;
     }
 
 
-    function startDragging(e) {
+    var initialX = 0;
 
-        e = e || window.event;
-
-        e.preventDefault();
-
-        initialX = e.clientX;
-        initialY = e.clientY;
-
-        document.onmouseup = stopDragging;
-
-        document.onmousemove = dragWindow;
-
-    }
+    var initialY = 0;
 
 
-    function dragWindow(e) {
+    header.addEventListener(
+        "mousedown",
+        function (event) {
 
-        e = e || window.event;
 
-        e.preventDefault();
+            if (
+                event.target.closest(
+                    "button"
+                )
+            ) {
 
-        currentX = initialX - e.clientX;
-        currentY = initialY - e.clientY;
+                return;
 
-        initialX = e.clientX;
-        initialY = e.clientY;
+            }
+
+
+            event.preventDefault();
+
+
+            focusWindow(
+                element.id
+            );
+
+
+            initialX =
+                event.clientX;
+
+            initialY =
+                event.clientY;
+
+
+            document.addEventListener(
+                "mousemove",
+                dragWindow
+            );
+
+
+            document.addEventListener(
+                "mouseup",
+                stopDragging,
+                {
+                    once: true
+                }
+            );
+
+        }
+    );
+
+
+    function dragWindow(event) {
+
+        var currentX =
+            initialX -
+            event.clientX;
+
+        var currentY =
+            initialY -
+            event.clientY;
+
+
+        initialX =
+            event.clientX;
+
+        initialY =
+            event.clientY;
+
 
         element.style.top =
-            (element.offsetTop - currentY) + "px";
+            (
+                element.offsetTop -
+                currentY
+            ) + "px";
+
 
         element.style.left =
-            (element.offsetLeft - currentX) + "px";
-
-        element.style.transform = "none";
+            (
+                element.offsetLeft -
+                currentX
+            ) + "px";
 
     }
 
 
     function stopDragging() {
 
-        document.onmouseup = null;
-
-        document.onmousemove = null;
+        document.removeEventListener(
+            "mousemove",
+            dragWindow
+        );
 
     }
 
 }
 
 
-// CLOSE WINDOW
+windowIds.forEach(
+    function (id) {
 
-function closeWindow(element) {
-
-    element.style.display = "none";
-
-}
-
-
-// OPEN WINDOW
-
-function openWindow(element) {
-
-    element.style.display = "flex";
-
-}
-
-
-// CLOSE BUTTON
-
-var welcomeScreenClose =
-    document.querySelector("#welcomeclose");
-
-welcomeScreenClose.addEventListener(
-    "click",
-    function () {
-
-        closeWindow(welcomeScreen);
+        dragElement(
+            getWindow(id)
+        );
 
     }
 );
 
 
-// OPEN BUTTON
+// FOCUS WINDOWS
 
-var welcomeScreenOpen =
-    document.querySelector("#welcomeopen");
+document
+    .querySelectorAll(".window")
+    .forEach(
+        function (element) {
 
-welcomeScreenOpen.addEventListener(
-    "click",
-    function () {
+            element.addEventListener(
+                "mousedown",
+                function () {
 
-        openWindow(welcomeScreen);
+                    focusWindow(
+                        element.id
+                    );
 
-    }
-);
+                }
+            );
 
-// APP WINDOWS
+        }
+    );
 
-function openApp(id) {
 
-    var app = document.getElementById(id);
+// OPEN BUTTONS
 
-    app.style.display = "block";
+document
+    .querySelectorAll("[data-open]")
+    .forEach(
+        function (button) {
 
-    app.style.zIndex = 100;
+            button.addEventListener(
+                "click",
+                function () {
+
+                    openWindow(
+                        button.dataset.open
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+// CLOSE BUTTONS
+
+document
+    .querySelectorAll("[data-close]")
+    .forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function (event) {
+
+                    event.stopPropagation();
+
+
+                    closeWindow(
+                        button.dataset.close
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+// TASK MANAGER
+
+function updateTaskManager() {
+
+    var body =
+        document.getElementById(
+            "taskManagerBody"
+        );
+
+
+    body.innerHTML = "";
+
+
+    var desktopRow =
+        document.createElement("tr");
+
+
+    desktopRow.innerHTML =
+        "<td>Desktop</td>" +
+        "<td>Running</td>" +
+        "<td>-</td>";
+
+
+    body.appendChild(
+        desktopRow
+    );
+
+
+    windowIds.forEach(
+        function (id) {
+
+            var element =
+                getWindow(id);
+
+
+            if (
+                !element ||
+                getComputedStyle(
+                    element
+                ).display === "none"
+            ) {
+
+                return;
+
+            }
+
+
+            var row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            var nameCell =
+                document.createElement(
+                    "td"
+                );
+
+
+            nameCell.textContent =
+                windowNames[id];
+
+
+            var statusCell =
+                document.createElement(
+                    "td"
+                );
+
+
+            statusCell.textContent =
+                "Running";
+
+
+            var actionCell =
+                document.createElement(
+                    "td"
+                );
+
+
+            var focusButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            focusButton.type =
+                "button";
+
+
+            focusButton.textContent =
+                "Focus";
+
+
+            focusButton.addEventListener(
+                "click",
+                function () {
+
+                    focusWindow(id);
+
+                }
+            );
+
+
+            actionCell.appendChild(
+                focusButton
+            );
+
+
+            row.appendChild(
+                nameCell
+            );
+
+
+            row.appendChild(
+                statusCell
+            );
+
+
+            row.appendChild(
+                actionCell
+            );
+
+
+            body.appendChild(
+                row
+            );
+
+        }
+    );
 
 }
-
-
-function closeApp(id) {
-
-    document.getElementById(id).style.display = "none";
-
-}
-
-
-// MAKE APP WINDOWS DRAGGABLE
-
-dragElement(document.getElementById("terminal"));
-
-dragElement(document.getElementById("notes"));
-
-dragElement(document.getElementById("taskmanager"));
 
 
 // TERMINAL
 
 var terminalInput =
-    document.getElementById("terminalInput");
+    document.getElementById(
+        "terminalInput"
+    );
+
 
 var terminalOutput =
-    document.getElementById("terminalOutput");
+    document.getElementById(
+        "terminalOutput"
+    );
 
 
-terminalInput.addEventListener("keydown", function(e) {
+function writeTerminal(text) {
 
-    if (e.key !== "Enter") {
-        return;
+    var line =
+        document.createElement(
+            "div"
+        );
+
+
+    line.textContent =
+        text;
+
+
+    terminalOutput.appendChild(
+        line
+    );
+
+
+    terminalOutput.scrollTop =
+        terminalOutput.scrollHeight;
+
+}
+
+
+terminalInput.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key !== "Enter"
+        ) {
+
+            return;
+
+        }
+
+
+        var command =
+            terminalInput.value.trim();
+
+
+        terminalInput.value =
+            "";
+
+
+        if (!command) {
+            return;
+        }
+
+
+        writeTerminal(
+            (userName || "user")
+                .toLowerCase() +
+            "@ysh:~$ " +
+            command
+        );
+
+
+        if (
+            command === "help"
+        ) {
+
+            writeTerminal(
+                "help  clear  date  whoami"
+            );
+
+        }
+
+        else if (
+            command === "clear"
+        ) {
+
+            terminalOutput.innerHTML =
+                "";
+
+        }
+
+        else if (
+            command === "date"
+        ) {
+
+            writeTerminal(
+                new Date()
+                    .toLocaleString()
+            );
+
+        }
+
+        else if (
+            command === "whoami"
+        ) {
+
+            writeTerminal(
+                userName || "User"
+            );
+
+        }
+
+        else {
+
+            writeTerminal(
+                "Command not found: " +
+                command
+            );
+
+        }
+
     }
+);
 
-    var command = terminalInput.value.trim();
 
-    terminalInput.value = "";
+// NOTES
 
-    if (command === "help") {
+var notesArea =
+    document.getElementById(
+        "notesArea"
+    );
 
-        terminalOutput.innerHTML +=
-            "<p>help &nbsp; clear &nbsp; date</p>";
 
-    }
+notesArea.value =
+    localStorage.getItem(
+        "yshNotes"
+    ) || "";
 
-    else if (command === "clear") {
 
-        terminalOutput.innerHTML = "";
+notesArea.addEventListener(
+    "input",
+    function () {
 
-    }
-
-    else if (command === "date") {
-
-        terminalOutput.innerHTML +=
-            "<p>" + new Date().toLocaleString() + "</p>";
-
-    }
-
-    else if (command !== "") {
-
-        terminalOutput.innerHTML +=
-            "<p>Command not found: " + command + "</p>";
+        localStorage.setItem(
+            "yshNotes",
+            notesArea.value
+        );
 
     }
+);
 
-});
+
+// BROWSER
+
+var browserForm =
+    document.getElementById(
+        "browserForm"
+    );
+
+
+var browserInput =
+    document.getElementById(
+        "browserInput"
+    );
+
+
+browserForm.addEventListener(
+    "submit",
+    function (event) {
+
+        event.preventDefault();
+
+
+        var query =
+            browserInput.value.trim();
+
+
+        if (!query) {
+
+            browserInput.focus();
+
+            return;
+
+        }
+
+
+        window.open(
+            "https://www.google.com/search?q=" +
+            encodeURIComponent(query),
+            "_blank"
+        );
+
+    }
+);
+
+
+// START
+
+openWindow(
+    "welcomeWindow"
+);
+
+updateTaskManager();
