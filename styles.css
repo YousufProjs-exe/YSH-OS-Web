@@ -1,7 +1,7 @@
 
-/* WELcoME PAGE STYLE START */
+/* WELcoME PAGE STYLE */
 body{
-    background-image: url(/images/OS\ background.png);
+    background-image: url("images/OS background.png");
     /* background-position: center; */
 
     color: rgba(10, 102, 177, 0.644);

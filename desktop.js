@@ -1,5 +1,4 @@
 
-
 var userName = localStorage.getItem("yshUserName") || "";
 var userNameInput = document.getElementById("userNameInput");
 var saveNameButton = document.getElementById("saveNameButton");
