@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,175 +13,236 @@
 <body>
 
     <!-- TOP BAR -->
-
     <div class="topbar">
 
-        <p class="username">
-            Yousuf
-        </p>
+        <span class="user-pill" id="userName">User</span>
 
-        <p class="osname">
-            YSH OS
-        </p>
+        <span class="os-pill">YSH OS</span>
 
-        <p id="timeElement">
-            Time
-        </p>
+        <span class="time-pill" id="timeElement">00:00:00</span>
 
     </div>
 
 
     <!-- DESKTOP -->
+    <main class="desktop"></main>
 
-    <div class="desktop">
-
-        <div class="desktop-note">
-            YSH OS
-        </div>
-
-    </div>
-
-
-    <!-- WINDOW -->
-
-    <div class="window" id="welcome">
-
-        <div class="windowheader" id="welcomeheader">
-
-            <p class="headertext">
-                YSH OS
-            </p>
-
-            <p class="closebutton" id="welcomeclose">
-                ×
-            </p>
-
-        </div>
-
-        <div class="windowcontent">
-
-            <h2>Welcome to YSH OS</h2>
-
-            <p>
-                A small web-based operating system built by Yousuf.
-            </p>
-
-            <p>
-                Drag this window using the header.
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <!-- OPEN WINDOW -->
-
-    <p class="openbutton" id="welcomeopen">
-        YSH OS
-    </p>
 
     <!-- APP DOCK -->
     <div class="app-dock">
-    
-        <button onclick="openApp('terminal')">
+
+        <button data-open="terminalWindow">
             Terminal
         </button>
-    
-        <button onclick="openApp('notes')">
+
+        <button data-open="notesWindow">
             Notes
         </button>
-    
-        <button onclick="openApp('taskmanager')">
+
+        <button data-open="browserWindow">
+            Browser
+        </button>
+
+        <button data-open="taskManagerWindow">
             Task Manager
         </button>
-    
+
     </div>
-    
-    
+
+
+    <!-- WELCOME WINDOW -->
+    <section class="window welcome-window" id="welcomeWindow">
+
+        <div class="window-header" id="welcomeWindowheader">
+
+            <span>YSH OS</span>
+
+            <button
+                class="close-button"
+                data-close="welcomeWindow">
+                ×
+            </button>
+
+        </div>
+
+        <div class="window-content">
+
+            <h1>Welcome to YSH OS</h1>
+
+            <p>
+                Welcome to your desktop.
+            </p>
+
+            <p class="hint">
+                Drag this window by its header.
+            </p>
+
+        </div>
+
+    </section>
+
+
     <!-- TERMINAL -->
-    
-    <div class="app-window" id="terminal">
-    
-        <div class="app-header" id="terminalheader">
+    <section class="window terminal-window" id="terminalWindow">
+
+        <div class="window-header" id="terminalWindowheader">
+
             <span>YSH Terminal</span>
-        
-            <button onclick="closeApp('terminal')">
+
+            <button
+                class="close-button"
+                data-close="terminalWindow">
                 ×
             </button>
+
         </div>
-    
+
         <div class="terminal-content">
-        
-            <p>YSH Terminal</p>
-            <p>Type <b>help</b> to see available commands.</p>
-        
-            <div class="terminal-line">
-                <span>yousuf@ysh:~$</span>
-                <input id="terminalInput" autocomplete="off">
+
+            <div>YSH Terminal</div>
+
+            <div class="hint">
+                Type <strong>help</strong> for commands.
             </div>
-        
-            <div id="terminalOutput"></div>
-        
+
+            <div
+                class="terminal-output"
+                id="terminalOutput">
+            </div>
+
+            <div class="terminal-line">
+
+                <span id="terminalUser">user</span>@ysh:~$
+
+                <input
+                    id="terminalInput"
+                    autocomplete="off"
+                >
+
+            </div>
+
         </div>
-    
-    </div>
-    
-    
+
+    </section>
+
+
     <!-- NOTES -->
-    
-    <div class="app-window" id="notes">
-    
-        <div class="app-header" id="notesheader">
+    <section class="window notes-window" id="notesWindow">
+
+        <div class="window-header" id="notesWindowheader">
+
             <span>Notes</span>
-        
-            <button onclick="closeApp('notes')">
+
+            <button
+                class="close-button"
+                data-close="notesWindow">
                 ×
             </button>
+
         </div>
-    
-        <textarea
-            class="notes-area"
-            placeholder="Write something..."></textarea>
-    
-    </div>
-    
-    
+
+        <div class="window-content notes-content">
+
+            <textarea
+                id="notesArea"
+                placeholder="Write something...">
+            </textarea>
+
+        </div>
+
+    </section>
+
+
+    <!-- BROWSER -->
+    <section class="window browser-window" id="browserWindow">
+
+        <div class="window-header" id="browserWindowheader">
+
+            <span>Browser</span>
+
+            <button
+                class="close-button"
+                data-close="browserWindow">
+                ×
+            </button>
+
+        </div>
+
+        <div class="browser-content">
+
+            <form
+                id="browserForm"
+                class="browser-search">
+
+                <input
+                    id="browserInput"
+                    type="search"
+                    placeholder="Search Google"
+                    autocomplete="off"
+                >
+
+                <button type="submit">
+                    Search
+                </button>
+
+                <button
+                    type="button"
+                    id="browserNewTab">
+                    ↗
+                </button>
+
+            </form>
+
+            <iframe
+                id="browserFrame"
+                title="Google Search"
+                src="https://www.google.com/webhp?igu=1">
+            </iframe>
+
+        </div>
+
+    </section>
+
+
     <!-- TASK MANAGER -->
-    
-    <div class="app-window" id="taskmanager">
-    
-        <div class="app-header" id="taskmanagerheader">
+    <section class="window task-window" id="taskManagerWindow">
+
+        <div class="window-header" id="taskManagerWindowheader">
+
             <span>Task Manager</span>
-        
-            <button onclick="closeApp('taskmanager')">
+
+            <button
+                class="close-button"
+                data-close="taskManagerWindow">
                 ×
             </button>
+
         </div>
-    
-        <div class="task-list">
-        
-            <p>
-                <span>YSH OS</span>
-                <span>Running</span>
-            </p>
-        
-            <p>
-                <span>Desktop</span>
-                <span>Running</span>
-            </p>
-        
-            <p>
-                <span>System Clock</span>
-                <span>Running</span>
-            </p>
-        
+
+        <div class="window-content">
+
+            <table class="task-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Window</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="taskManagerBody"></tbody>
+
+            </table>
+
         </div>
-    
-    </div>
+
+    </section>
+
 
     <script src="desktop.js"></script>
 
 </body>
-
 </html>
