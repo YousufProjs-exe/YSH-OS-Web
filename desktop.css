@@ -1,6 +1,7 @@
 
 * {
     box-sizing: border-box;
+    /* cursor: cell; */
 }
 
 html,
@@ -11,13 +12,9 @@ body {
 
 body {
     margin: 0;
-
     overflow: hidden;
-
     font-family: Arial, Helvetica, sans-serif;
-
     color: white;
-
     background:
         #050505
         url("images/OS background.png")
@@ -36,34 +33,20 @@ button {
     color: white;
 }
 
-
 /* TOP BAR */
-
 .topbar {
     position: fixed;
-
     top: 0;
     left: 0;
-
     width: 100%;
     height: 48px;
-
     padding: 8px 16px;
-
     display: grid;
-
     grid-template-columns: 1fr auto 1fr;
-
     align-items: center;
-
     background: rgba(0, 0, 0, 0.28);
-
-    border-bottom:
-        1px solid
-        rgba(255, 255, 255, 0.12);
-
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(6px);
-
     z-index: 1000;
 }
 
@@ -83,9 +66,7 @@ button {
 .os-pill,
 .time-pill {
     padding: 4px 10px;
-
     border-radius: 14px;
-
     background: rgba(255, 255, 255, 0.12);
 }
 
@@ -93,55 +74,33 @@ button {
     font-weight: bold;
 }
 
-
 /* DESKTOP */
-
 .desktop {
     width: 100%;
     height: 100%;
 }
 
-
 /* APP DOCK */
-
 .app-dock {
     position: fixed;
-
     left: 50%;
     bottom: 16px;
-
     transform: translateX(-50%);
-
     display: flex;
-
     gap: 6px;
-
     padding: 6px;
-
     background: rgba(0, 0, 0, 0.30);
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.20);
-
+    border: 1px solid rgba(255, 255, 255, 0.20);
     border-radius: 8px;
-
     backdrop-filter: blur(6px);
-
     z-index: 1000;
 }
 
 .app-dock button {
     padding: 6px 10px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.18);
-
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 5px;
-
     background: rgba(255, 255, 255, 0.06);
-
     cursor: pointer;
 }
 
@@ -149,36 +108,20 @@ button {
     background: rgba(255, 255, 255, 0.14);
 }
 
-
 /* WINDOWS */
-
 .window {
     position: absolute;
-
     display: none;
-
     width: 500px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.40);
-
+    border: 1px solid rgba(255, 255, 255, 0.40);
     border-radius: 8px;
-
     background: rgba(0, 0, 0, 0.48);
-
     backdrop-filter: blur(7px);
-
-    box-shadow:
-        0 10px 30px
-        rgba(0, 0, 0, 0.20);
-
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
     z-index: 10;
 }
 
-
 /* WINDOW POSITIONS */
-
 .welcome-window {
     top: 150px;
     left: 210px;
@@ -187,51 +130,36 @@ button {
 .terminal-window {
     top: 110px;
     left: 760px;
-
     width: 520px;
 }
 
 .notes-window {
     top: 420px;
     left: 270px;
-
     width: 420px;
 }
 
 .browser-window {
     top: 95px;
     left: 330px;
-
     width: 760px;
 }
 
 .task-window {
     top: 360px;
     left: 790px;
-
     width: 560px;
 }
 
-
 /* WINDOW HEADER */
-
 .window-header {
     height: 40px;
-
     padding: 0 10px 0 13px;
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
-    border-bottom:
-        1px solid
-        rgba(255, 255, 255, 0.22);
-
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
     cursor: grab;
-
     user-select: none;
 }
 
@@ -239,23 +167,15 @@ button {
     cursor: grabbing;
 }
 
-
 /* CLOSE BUTTON */
-
 .close-button {
     width: 28px;
     height: 28px;
-
     padding: 0;
-
     border: 0;
-
     border-radius: 4px;
-
     background: transparent;
-
     cursor: pointer;
-
     font-size: 18px;
 }
 
@@ -266,7 +186,6 @@ button {
 
 
 /* WINDOW CONTENT */
-
 .window-content,
 .terminal-content {
     padding: 18px;
@@ -274,114 +193,72 @@ button {
 
 .window h1 {
     margin-top: 0;
-
     font-size: 22px;
 }
 
 .hint {
     color: #c0c0c0;
-
     font-size: 14px;
 }
 
-
-/* NAME FORM */
-
+/* NAME -  coz not everyone is YOusuf */
 .name-form {
     display: flex;
-
     gap: 8px;
-
     margin-top: 20px;
 }
 
 .name-form input {
     flex: 1;
-
     min-width: 0;
-
     padding: 8px 10px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.20);
-
+    border: 1px solid rgba(255, 255, 255, 0.20);
     border-radius: 5px;
-
     outline: none;
-
-    background:
-        rgba(0, 0, 0, 0.30);
-
+    background: rgba(0, 0, 0, 0.30);
     color: white;
 }
 
 .name-form button {
     padding: 8px 12px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.20);
-
+    border: 1px solid rgba(255, 255, 255, 0.20);
     border-radius: 5px;
-
-    background:
-        rgba(255, 255, 255, 0.08);
-
+    background: rgba(255, 255, 255, 0.08);
     cursor: pointer;
 }
 
 .name-form button:hover {
-    background:
-        rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.15);
 }
 
-
 /* TERMINAL */
-
 .terminal-output {
     min-height: 70px;
-
     max-height: 150px;
-
     margin: 14px 0;
-
     overflow-y: auto;
-
     font-family: monospace;
-
     white-space: pre-wrap;
 }
 
 .terminal-line {
     display: flex;
-
     align-items: center;
-
     gap: 4px;
-
     font-family: monospace;
 }
 
 .terminal-line input {
     flex: 1;
-
     min-width: 0;
-
     border: 0;
-
     outline: 0;
-
     background: transparent;
-
     color: white;
-
     font-family: monospace;
 }
 
-
 /* NOTES */
-
 .notes-content {
     padding: 12px;
 }
@@ -389,160 +266,100 @@ button {
 .notes-content textarea {
     width: 100%;
     height: 260px;
-
     resize: none;
-
     border: 0;
-
     outline: 0;
-
     background: transparent;
-
     color: white;
 }
 
-
 /* BROWSER */
-
 .browser-content {
-    padding: 14px;
+    padding: 10px;
 }
 
 .browser-search {
     display: flex;
-
     gap: 6px;
+    margin-bottom: 10px;
 }
 
 .browser-search input {
     flex: 1;
-
     min-width: 0;
-
     padding: 8px 10px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.20);
-
+    border: 1px solid rgba(255, 255, 255, 0.20);
     border-radius: 5px;
-
     outline: none;
-
-    background:
-        rgba(0, 0, 0, 0.35);
-
+    background: rgba(0, 0, 0, 0.35);
     color: white;
 }
 
 .browser-search button {
     padding: 8px 12px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.20);
-
+    border: 1px solid rgba(255, 255, 255, 0.20);
     border-radius: 5px;
-
-    background:
-        rgba(255, 255, 255, 0.08);
-
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
     cursor: pointer;
 }
 
 .browser-search button:hover {
-    background:
-        rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.14);
 }
 
-.browser-home {
-    margin-top: 20px;
-
-    padding: 25px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.10);
-
-    border-radius: 6px;
-
-    background:
-        rgba(0, 0, 0, 0.18);
+#browserFrame {
+    display: block;
+    width: 100%;
+    height: 430px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: white;
 }
-
-.browser-home h2 {
-    margin-top: 0;
-}
-
-.browser-home p {
-    color: #c0c0c0;
-}
-
 
 /* TASK MANAGER */
-
 .task-table {
     width: 100%;
-
     border-collapse: collapse;
 }
 
 .task-table th,
 .task-table td {
     padding: 8px;
-
     text-align: left;
-
-    border-bottom:
-        1px solid
-        rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .task-table th {
     font-weight: normal;
-
     color: #c9c9c9;
 }
 
 .task-table button {
     padding: 4px 8px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.18);
-
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 4px;
-
-    background:
-        rgba(255, 255, 255, 0.06);
-
+    background: rgba(255, 255, 255, 0.06);
     cursor: pointer;
 }
 
 .task-table button:hover {
-    background:
-        rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.14);
 }
 
 
 /* SMALL SCREENS */
-
 @media (max-width: 900px) {
 
     .window {
         width: calc(100vw - 30px);
-
         left: 15px !important;
     }
-
     .browser-window {
         top: 70px;
     }
 
     .app-dock {
         max-width: calc(100vw - 20px);
-
         overflow-x: auto;
     }
-
 }

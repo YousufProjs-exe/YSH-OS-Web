@@ -13,12 +13,11 @@
 
 <body>
 
-    <!-- TOP BAR -->
-
+    <!-- WIDGET -->
     <div class="topbar">
 
         <span class="user-pill" id="userName">
-            User
+            User - NPC
         </span>
 
         <span class="os-pill">
@@ -26,19 +25,15 @@
         </span>
 
         <span class="time-pill" id="timeElement">
-            00:00:00
+            timme
         </span>
 
     </div>
 
-
     <!-- DESKTOP -->
-
     <main class="desktop"></main>
 
-
-    <!-- APP DOCK -->
-
+    <!-- TASK MANAGER -->
     <div class="app-dock">
 
         <button type="button" data-open="terminalWindow">
@@ -59,125 +54,55 @@
 
     </div>
 
-
     <!-- WELCOME WINDOW -->
+    <section class="window welcome-window" id="welcomeWindow">
 
-    <section
-        class="window welcome-window"
-        id="welcomeWindow"
-    >
+        <div class="window-header" id="welcomeWindowheader">
 
-        <div
-            class="window-header"
-            id="welcomeWindowheader"
-        >
-
-            <span>
-                YSH OS
-            </span>
-
-            <button
-                class="close-button"
-                type="button"
-                data-close="welcomeWindow"
-                aria-label="Close"
-            >
-                ×
-            </button>
+            <span>YSH OS </span>
+            <button class="close-button" type="button" data-close="welcomeWindow" aria-label="Close">×</button>
 
         </div>
 
-
         <div class="window-content">
 
-            <h1 id="welcomeTitle">
-                Welcome to YSH OS
-            </h1>
-
-            <p id="welcomeMessage">
-                Before you begin, what's your name?
-            </p>
-
+            <h1 id="welcomeTitle">Welcome to YSH OS</h1>
+            <p id="welcomeMessage">Before you begin, what's your name?</p>
 
             <div class="name-form">
 
-                <input
-                    type="text"
-                    id="userNameInput"
-                    placeholder="Enter your name"
-                    maxlength="30"
-                    autocomplete="name"
-                >
-
-                <button
-                    type="button"
-                    id="saveNameButton"
-                >
-                    Continue
-                </button>
+                <input type="text" id="userNameInput" placeholder="Enter your name" maxlength="30" autocomplete="name">
+                <button type="button" id="saveNameButton">Continue</button>
 
             </div>
-
         </div>
 
     </section>
 
-
     <!-- TERMINAL -->
+    <section class="window terminal-window" id="terminalWindow">
 
-    <section
-        class="window terminal-window"
-        id="terminalWindow"
-    >
+        <div class="window-header" id="terminalWindowheader">
 
-        <div
-            class="window-header"
-            id="terminalWindowheader"
-        >
-
-            <span>
-                YSH Terminal
-            </span>
-
-            <button
-                class="close-button"
-                type="button"
-                data-close="terminalWindow"
-                aria-label="Close"
-            >
-                ×
-            </button>
+            <span>YSH Terminal</span>
+            <button class="close-button" type="button" data-close="terminalWindow" aria-label="Close">×</button>
 
         </div>
 
-
         <div class="terminal-content">
 
-            <div>
-                YSH Terminal
-            </div>
+            <div>YSH Terminal</div>
 
             <div class="hint">
                 Type <strong>help</strong> for commands.
             </div>
 
-
-            <div
-                class="terminal-output"
-                id="terminalOutput"
-            ></div>
-
+            <div class="terminal-output" id="terminalOutput"></div>
 
             <div class="terminal-line">
 
-                <span id="terminalUser">
-                    user
-                </span>@ysh:~$
-
-                <input
-                    id="terminalInput"
-                    autocomplete="off"
-                >
+                <span id="terminalUser">user</span>@ysh:~$
+                <input id="terminalInput" autocomplete="off">
 
             </div>
 
@@ -185,137 +110,67 @@
 
     </section>
 
-
     <!-- NOTES -->
+    <section class="window notes-window" id="notesWindow">
 
-    <section
-        class="window notes-window"
-        id="notesWindow"
-    >
+        <div class="window-header" id="notesWindowheader">
 
-        <div
-            class="window-header"
-            id="notesWindowheader"
-        >
-
-            <span>
-                Notes
-            </span>
-
-            <button
-                class="close-button"
-                type="button"
-                data-close="notesWindow"
-                aria-label="Close"
-            >
-                ×
-            </button>
+            <span>Notes</span>
+            <button class="close-button" type="button" data-close="notesWindow" aria-label="Close">×</button>
 
         </div>
 
-
         <div class="window-content notes-content">
 
-            <textarea
-                id="notesArea"
-                placeholder="Write something..."
-            ></textarea>
+            <textarea id="notesArea" placeholder="Write something..."></textarea>
 
         </div>
 
     </section>
 
-
     <!-- BROWSER -->
+    <section class="window browser-window" id="browserWindow">
 
-    <section
-        class="window browser-window"
-        id="browserWindow"
-    >
+        <div class="window-header" id="browserWindowheader">
 
-        <div
-            class="window-header"
-            id="browserWindowheader"
-        >
+            <span>Browser</span>
 
-            <span>
-                ARC - Browser
-            </span>
-
-            <button
-                class="close-button"
-                type="button"
-                data-close="browserWindow"
-                aria-label="Close"
-            >
+            <button class="close-button" type="button" data-close="browserWindow">
                 ×
             </button>
 
         </div>
 
-
         <div class="browser-content">
 
-            <form
-                id="browserForm"
-                class="browser-search"
-            >
+            <form id="browserForm" class="browser-search">
 
-                <input
-                    id="browserInput"
-                    type="search"
-                    placeholder="Search Google"
-                    autocomplete="off"
-                >
+                <input id="browserInput type="search" placeholder="Search Google" autocomplete="off">
 
                 <button type="submit">
                     Search
                 </button>
 
+                <button type="button" id="browserNewTab">
+                    ↗
+                </button>
+
             </form>
 
-
-            <div class="browser-home">
-
-                <h2>
-                    Google
-                </h2>
-
-                <p>
-                    Search the web with Google.
-                </p>
-
-            </div>
+            <iframe id="browserFrame" title="Google" src="https://www.google.com/webhp?igu=1">
+            </iframe>
 
         </div>
 
     </section>
 
-
     <!-- TASK MANAGER -->
+    <section class="window task-window" id="taskManagerWindow">
 
-    <section
-        class="window task-window"
-        id="taskManagerWindow"
-    >
+        <div class="window-header" id="taskManagerWindowheader">
 
-        <div
-            class="window-header"
-            id="taskManagerWindowheader"
-        >
-
-            <span>
-                Task Manager
-            </span>
-
-            <button
-                class="close-button"
-                type="button"
-                data-close="taskManagerWindow"
-                aria-label="Close"
-            >
-                ×
-            </button>
+            <span>Task Manager</span>
+            <button class="close-button" type="button" data-close="taskManagerWindow" aria-label="Close">×</button>
 
         </div>
 
@@ -344,18 +199,13 @@
 
                 </thead>
 
-
                 <tbody id="taskManagerBody"></tbody>
 
             </table>
-
         </div>
-
     </section>
 
-
-    <script src="desktop.js"></script>
+<script src="desktop.js"></script>
 
 </body>
-
 </html>
