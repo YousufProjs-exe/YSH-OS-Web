@@ -1,545 +1,435 @@
 
-var userName = localStorage.getItem("yshUserName") || "";
-var userNameInput = document.getElementById("userNameInput");
-var saveNameButton = document.getElementById("saveNameButton");
-var welcomeTitle = document.getElementById("welcomeTitle");
-var welcomeMessage = document.getElementById("welcomeMessage");
+// USER
 
-function updateUserDisplay() {
+let userName = localStorage.getItem("yshUserName") || "";
 
-    var displayName = userName || "User";
-    document.getElementById("userName").textContent = displayName;
-    document.getElementById("terminalUser").textContent = displayName.toLowerCase();
+const userDisplay = document.getElementById("userName");
+const terminalUser = document.getElementById("terminalUser");
+
+const nameInput = document.getElementById("userNameInput");
+const saveNameButton = document.getElementById("saveNameButton");
+
+const welcomeTitle = document.getElementById("welcomeTitle");
+const welcomeMessage = document.getElementById("welcomeMessage");
+
+
+function setUser() {
+    const name = userName || "User";
+
+    userDisplay.textContent = name;
+    terminalUser.textContent = name.toLowerCase();
 
     if (userName) {
-
-        welcomeTitle.textContent = "Welcome back, " + userName;
+        welcomeTitle.textContent = "Welcome back, " + name;
         welcomeMessage.textContent = "Your YSH OS desktop is ready.";
-        userNameInput.value = userName;
-
+        nameInput.value = name;
     }
-
 }
 
-updateUserDisplay();
 
-saveNameButton.addEventListener(
-    "click",
-    saveName
-);
+saveNameButton.addEventListener("click", function () {
 
-userNameInput.addEventListener(
-    "keydown",
-    function (event) {
+    const name = nameInput.value.trim();
 
-        if (event.key === "Enter") {
-            saveName();
-        }
-
-    }
-);
-
-function saveName() {
-
-    var enteredName = userNameInput.value.trim();
-
-    if (!enteredName) {
-
-        userNameInput.focus();
+    if (name === "") {
+        nameInput.focus();
         return;
-
     }
 
-    userName = enteredName;
+    userName = name;
 
     localStorage.setItem("yshUserName", userName);
 
-    updateUserDisplay();
-    closeWindow("welcomeWindow");
+    setUser();
 
-}
+});
 
-// CLOCK
-function updateTime() {
 
-    document.getElementById("timeElement").textContent = new Date().toLocaleTimeString();
+nameInput.addEventListener("keydown", function (event) {
 
-}
-
-updateTime();
-setInterval(updateTime, 1000);
-
-// WINDOWS
-var windowIds = [
-
-    "welcomeWindow",
-    "terminalWindow",
-    "notesWindow",
-    "browserWindow",
-    "taskManagerWindow"
-
-];
-
-var windowNames = {
-
-    welcomeWindow: "YSH OS",
-    terminalWindow: "YSH Terminal",
-    notesWindow: "Notes",
-    browserWindow: "ARC - Browser",
-    taskManagerWindow: "Task Manager"
-
-};
-
-var nextZIndex = 20;
-
-function getWindow(id) {
-
-    return document.getElementById(id);
-
-}
-
-function focusWindow(id) {
-
-    var element = getWindow(id);
-
-    if (!element) {
-        return;
+    if (event.key === "Enter") {
+        saveNameButton.click();
     }
 
-    nextZIndex++;
-    element.style.zIndex = nextZIndex;
+});
 
+setUser();
+
+
+// CLOCK
+
+function updateClock() {
+    document.getElementById("timeElement").textContent =
+        new Date().toLocaleTimeString();
 }
+
+updateClock();
+
+setInterval(updateClock, 1000);
+
+
+// WINDOWS
+
+const windows = document.querySelectorAll(".window");
+
+let topWindow = 20;
+
 
 function openWindow(id) {
 
-    var element = getWindow(id);
+    const windowElement = document.getElementById(id);
 
-    if (!element) {
+    if (!windowElement) {
         return;
     }
 
-    element.style.display = "block";
+    windowElement.style.display = "block";
 
-    focusWindow(id);
+    topWindow++;
+    windowElement.style.zIndex = topWindow;
+
     updateTaskManager();
-
 }
+
 
 function closeWindow(id) {
 
-    var element = getWindow(id);
+    const windowElement = document.getElementById(id);
 
-    if (!element) {
+    if (!windowElement) {
         return;
     }
 
-    element.style.display = "none";
-    updateTaskManager();
+    windowElement.style.display = "none";
 
+    updateTaskManager();
 }
 
-// DRAGGING
-function dragElement(element) {
 
-    var header = document.getElementById(element.id + "header");
+function focusWindow(windowElement) {
+
+    topWindow++;
+
+    windowElement.style.zIndex = topWindow;
+}
+
+
+windows.forEach(function (windowElement) {
+
+    windowElement.addEventListener("mousedown", function () {
+        focusWindow(windowElement);
+    });
+
+});
+
+
+// OPEN BUTTONS
+
+document.querySelectorAll("[data-open]").forEach(function (button) {
+
+    button.addEventListener("click", function () {
+        openWindow(button.dataset.open);
+    });
+
+});
+
+
+// CLOSE BUTTONS
+
+document.querySelectorAll("[data-close]").forEach(function (button) {
+
+    button.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        closeWindow(button.dataset.close);
+
+    });
+
+});
+
+
+// DRAGGING
+
+windows.forEach(function (windowElement) {
+
+    const header =
+        windowElement.querySelector(".window-header");
 
     if (!header) {
         return;
     }
 
-    var initialX = 0;
-    var initialY = 0;
-
-    header.addEventListener(
-        "mousedown",
-        function (event) {
+    let moving = false;
+    let oldX = 0;
+    let oldY = 0;
 
 
-            if (
-                event.target.closest(
-                    "button"
-                )
-            ) {
+    header.addEventListener("mousedown", function (event) {
 
-                return;
-
-            }
-
-            event.preventDefault();
-
-            focusWindow(
-                element.id
-            );
-
-            initialX = event.clientX;
-            initialY = event.clientY;
-
-            document.addEventListener(
-                "mousemove",
-                dragWindow
-            );
-
-
-            document.addEventListener(
-                "mouseup",
-                stopDragging,
-                {
-                    once: true
-                }
-            );
-
+        if (event.target.closest(".close-button")) {
+            return;
         }
-    );
 
-    function dragWindow(event) {
+        moving = true;
 
-        var currentX = initialX - event.clientX;
-        var currentY = initialY - event.clientY;
-        initialX = event.clientX;
-        initialY = event.clientY;
+        oldX = event.clientX;
+        oldY = event.clientY;
 
-        element.style.top =
-            (
-                element.offsetTop -
-                currentY
-            ) + "px";
+        focusWindow(windowElement);
+
+        document.addEventListener("mousemove", moveWindow);
+        document.addEventListener("mouseup", stopMoving);
+
+    });
 
 
-        element.style.left =
-            (
-                element.offsetLeft -
-                currentX
-            ) + "px";
+    function moveWindow(event) {
+
+        if (!moving) {
+            return;
+        }
+
+        const x = event.clientX - oldX;
+        const y = event.clientY - oldY;
+
+        windowElement.style.left =
+            windowElement.offsetLeft + x + "px";
+
+        windowElement.style.top =
+            windowElement.offsetTop + y + "px";
+
+        oldX = event.clientX;
+        oldY = event.clientY;
+    }
+
+
+    function stopMoving() {
+
+        moving = false;
+
+        document.removeEventListener("mousemove", moveWindow);
+        document.removeEventListener("mouseup", stopMoving);
 
     }
 
-    function stopDragging() {
-
-        document.removeEventListener(
-            "mousemove",
-            dragWindow
-        );
-
-    }
-
-}
-
-windowIds.forEach(
-    function (id) {
-
-        dragElement(
-            getWindow(id)
-        );
-
-    }
-);
-
-// FOCUS WINDOWS
-document
-    .querySelectorAll(".window")
-    .forEach(
-        function (element) {
-
-            element.addEventListener(
-                "mousedown",
-                function () {
-
-                    focusWindow(
-                        element.id
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-// OPEN BUTTONS
-document
-    .querySelectorAll("[data-open]")
-    .forEach(
-        function (button) {
-
-            button.addEventListener(
-                "click",
-                function () {
-
-                    openWindow(
-                        button.dataset.open
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-// CLOSE BUTTONS
-document
-    .querySelectorAll("[data-close]")
-    .forEach(
-        function (button) {
-
-            button.addEventListener(
-                "click",
-                function (event) {
-
-                    event.stopPropagation();
-
-
-                    closeWindow(
-                        button.dataset.close
-                    );
-
-                }
-            );
-
-        }
-    );
+});
 
 
 // TASK MANAGER
+
+const taskNames = {
+    welcomeWindow: "Welcome",
+    terminalWindow: "YSH Terminal",
+    notesWindow: "Notes",
+    browserWindow: "Browser",
+    taskManagerWindow: "Task Manager"
+};
+
+
 function updateTaskManager() {
 
-    var body = document.getElementById("taskManagerBody");
-    body.innerHTML = "";
-    var desktopRow = document.createElement("tr");
+    const taskBody =
+        document.getElementById("taskManagerBody");
 
-    desktopRow.innerHTML =
-        "<td>Desktop</td>" +
-        "<td>Running</td>" +
-        "<td>-</td>";
+    if (!taskBody) {
+        return;
+    }
 
-    body.appendChild(desktopRow);
+    taskBody.innerHTML = "";
 
-    windowIds.forEach(
-        function (id) {
+    windows.forEach(function (windowElement) {
 
-            var element = getWindow(id);
-
-            if (
-                !element ||
-                getComputedStyle(
-                    element
-                ).display === "none"
-            ) {
-
-                return;
-
-            }
-
-            var row = document.createElement("tr");
-            var nameCell = document.createElement("td");
-            nameCell.textContent = windowNames[id];
-            var statusCell = document.createElement("td");
-            statusCell.textContent = "Running";
-            var actionCell = document.createElement("td");
-            var focusButton = document.createElement("button");
-
-            focusButton.type = "button";
-            focusButton.textContent = "Focus";
-
-
-            focusButton.addEventListener(
-                "click",
-                function () {
-
-                    focusWindow(id);
-
-                }
-            );
-
-            actionCell.appendChild(focusButton);
-            row.appendChild(nameCell);
-            row.appendChild(statusCell);
-            row.appendChild(actionCell);
-            body.appendChild(row);
-
+        if (windowElement.style.display === "none") {
+            return;
         }
+
+        const row = document.createElement("tr");
+
+        const name = document.createElement("td");
+        name.textContent =
+            taskNames[windowElement.id] || windowElement.id;
+
+        const status = document.createElement("td");
+        status.textContent = "Running";
+
+        const action = document.createElement("td");
+
+        const button = document.createElement("button");
+        button.textContent = "Focus";
+
+        button.addEventListener("click", function () {
+            focusWindow(windowElement);
+        });
+
+        action.appendChild(button);
+
+        row.appendChild(name);
+        row.appendChild(status);
+        row.appendChild(action);
+
+        taskBody.appendChild(row);
+
+    });
+}
+
+
+// TERMINAL
+
+const terminalInput =
+    document.getElementById("terminalInput");
+
+const terminalOutput =
+    document.getElementById("terminalOutput");
+
+
+function printTerminal(text) {
+
+    const line = document.createElement("div");
+
+    line.textContent = text;
+
+    terminalOutput.appendChild(line);
+
+    terminalOutput.scrollTop =
+        terminalOutput.scrollHeight;
+}
+
+
+terminalInput.addEventListener("keydown", function (event) {
+
+    if (event.key !== "Enter") {
+        return;
+    }
+
+    const text = terminalInput.value.trim();
+
+    terminalInput.value = "";
+
+    if (text === "") {
+        return;
+    }
+
+    printTerminal(
+        (userName || "user").toLowerCase() +
+        "@ysh:~$ " +
+        text
     );
 
-}
+    const parts = text.split(" ");
+    const command = parts[0].toLowerCase();
+    const argument = parts.slice(1).join(" ");
 
-// **TERMINAL**
-var terminalInput = document.getElementById("terminalInput");
-var terminalOutput = document.getElementById("terminalOutput");
 
-function writeTerminal(text) {
+    if (command === "help") {
 
-    var line = document.createElement("div");
-    line.textContent = text;
-    terminalOutput.appendChild(line);
-    terminalOutput.scrollTop = terminalOutput.scrollHeight;
-}
-
-terminalInput.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (event.key !== "Enter") {
-            return;
-        }
-
-        var command = terminalInput.value.trim();
-        terminalInput.value = "";
-
-        if (!command) {
-            return;
-        }
-
-        writeTerminal(
-            (userName || "user").toLowerCase() +
-            "@ysh:~$ " + command
+        printTerminal(
+            "help  clear  date  time  whoami  ver  about  echo"
         );
 
-        var parts = command.split(" ");
-        var cmd = parts[0].toLowerCase();
-        var argument = parts.slice(1).join(" ");
+    } else if (command === "clear") {
 
-        if (cmd === "help") {
+        terminalOutput.innerHTML = "";
 
-            writeTerminal(
-                "Available commands:"
-            );
+    } else if (command === "date") {
 
-            writeTerminal(
-                "help  clear  date  time  whoami"
-            );
+        printTerminal(new Date().toLocaleDateString());
 
-            writeTerminal(
-                "ver  about  echo"
-            );
+    } else if (command === "time") {
 
-        }
+        printTerminal(new Date().toLocaleTimeString());
 
-        else if (cmd === "clear") {
+    } else if (command === "whoami") {
 
-            terminalOutput.innerHTML = "";
+        printTerminal(userName || "User");
 
-        }
+    } else if (command === "ver") {
 
-        else if (cmd === "date") {
+        printTerminal("YSH OS WebOS 1.0");
 
-            writeTerminal(
-                new Date().toLocaleDateString()
-            );
+    } else if (command === "about") {
 
-        }
+        printTerminal("YSH OS - YSH running in a browser.");
 
-        else if (cmd === "time") {
+    } else if (command === "echo") {
 
-            writeTerminal(
-                new Date().toLocaleTimeString()
-            );
+        printTerminal(argument);
 
-        }
+    } else {
 
-        else if (cmd === "whoami") {
-
-            writeTerminal(
-                userName || "User"
-            );
-
-        }
-
-        else if (cmd === "ver") {
-
-            writeTerminal(
-                "YSH OS WebOS 1.0"
-            );
-
-        }
-
-        else if (cmd === "about") {
-
-            writeTerminal(
-                "YSH OS - A web-based OS built by Yousuf."
-            );
-
-        }
-
-        else if (cmd === "echo") {
-
-            writeTerminal(
-                argument
-            );
-
-        }
-
-        else {
-
-            writeTerminal(
-                "Command not found: " + cmd
-            );
-
-        }
+        printTerminal("Command not found: " + command);
 
     }
-);
 
-// **NOTES**
-var notesArea = document.getElementById("notesArea");
-notesArea.value = localStorage.getItem("yshNotes") || "";
-notesArea.addEventListener(
-    "input",
-    function () {
+});
 
-        localStorage.setItem(
-            "yshNotes",
-            notesArea.value
-        );
 
+// NOTES
+
+const notesArea =
+    document.getElementById("notesArea");
+
+notesArea.value =
+    localStorage.getItem("yshNotes") || "";
+
+notesArea.addEventListener("input", function () {
+
+    localStorage.setItem(
+        "yshNotes",
+        notesArea.value
+    );
+
+});
+
+
+// BROWSER
+
+const browserForm =
+    document.getElementById("browserForm");
+
+const browserInput =
+    document.getElementById("browserInput");
+
+const browserFrame =
+    document.getElementById("browserFrame");
+
+const browserNewTab =
+    document.getElementById("browserNewTab");
+
+
+browserForm.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    const query = browserInput.value.trim();
+
+    if (query === "") {
+        return;
     }
-);
+
+    browserFrame.src =
+        "https://www.google.com/search?igu=1&q=" +
+        encodeURIComponent(query);
+
+});
 
 
-// **BROWSER**
-var browserForm = document.getElementById("browserForm");
-var browserInput = document.getElementById("browserInput");
-var browserFrame = document.getElementById("browserFrame");
-var browserNewTab = document.getElementById("browserNewTab");
+browserNewTab.addEventListener("click", function () {
 
-// BROWSER WINDOW
-browserForm.addEventListener(
-    "submit",
-    function (event) {
+    const query =
+        browserInput.value.trim() || "Google";
 
-        event.preventDefault();
+    window.open(
+        "https://www.google.com/search?q=" +
+        encodeURIComponent(query),
+        "_blank"
+    );
 
-        var query = browserInput.value.trim();
+});
 
-        if (!query) {
-            return;
-        }
-
-        browserFrame.src = "https://www.google.com/search?igu=1&q=" + encodeURIComponent(query);
-
-    }
-);
-
-// BROWSER TAB
-browserNewTab.addEventListener(
-    "click",
-    function () {
-
-        var query = browserInput.value.trim();
-
-        if (!query) {
-            query = "Google";
-        }
-
-        window.open(
-            "https://www.google.com/search?q=" +
-            encodeURIComponent(query),
-            "_blank"
-        );
-
-    }
-);
 
 // START
+
 openWindow("welcomeWindow");
+
 updateTaskManager();
