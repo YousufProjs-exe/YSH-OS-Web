@@ -1,23 +1,16 @@
 
-// USER
-
 let userName = localStorage.getItem("yshUserName") || "";
-
 const userDisplay = document.getElementById("userName");
 const terminalUser = document.getElementById("terminalUser");
-
 const nameInput = document.getElementById("userNameInput");
 const saveNameButton = document.getElementById("saveNameButton");
-
 const welcomeTitle = document.getElementById("welcomeTitle");
 const welcomeMessage = document.getElementById("welcomeMessage");
 
-
 function setUser() {
     const name = userName || "User";
-
     userDisplay.textContent = name;
-    terminalUser.textContent = name.toLowerCase();
+    if (terminalUser) terminalUser.textContent = name.toLowerCase();
 
     if (userName) {
         welcomeTitle.textContent = "Welcome back, " + name;
@@ -26,410 +19,310 @@ function setUser() {
     }
 }
 
-
-saveNameButton.addEventListener("click", function () {
-
+function saveUserName() {
     const name = nameInput.value.trim();
-
-    if (name === "") {
+    if (!name) {
         nameInput.focus();
         return;
     }
 
     userName = name;
-
     localStorage.setItem("yshUserName", userName);
-
     setUser();
+    closeWindow("welcomeWindow");
+}
 
-});
-
-
+saveNameButton.addEventListener("click", saveUserName);
 nameInput.addEventListener("keydown", function (event) {
-
     if (event.key === "Enter") {
-        saveNameButton.click();
+        event.preventDefault();
+        saveUserName();
     }
-
 });
 
 setUser();
 
-
 // CLOCK
-
 function updateClock() {
-    document.getElementById("timeElement").textContent =
-        new Date().toLocaleTimeString();
+    document.getElementById("timeElement").textContent = new Date().toLocaleTimeString();
 }
-
 updateClock();
-
 setInterval(updateClock, 1000);
 
-
 // WINDOWS
-
 const windows = document.querySelectorAll(".window");
-
 let topWindow = 20;
 
-
 function openWindow(id) {
-
     const windowElement = document.getElementById(id);
-
-    if (!windowElement) {
-        return;
-    }
+    if (!windowElement) return;
 
     windowElement.style.display = "block";
-
     topWindow++;
     windowElement.style.zIndex = topWindow;
-
     updateTaskManager();
 }
-
 
 function closeWindow(id) {
-
     const windowElement = document.getElementById(id);
-
-    if (!windowElement) {
-        return;
-    }
+    if (!windowElement) return;
 
     windowElement.style.display = "none";
-
     updateTaskManager();
 }
 
-
 function focusWindow(windowElement) {
-
     topWindow++;
-
     windowElement.style.zIndex = topWindow;
 }
 
-
 windows.forEach(function (windowElement) {
-
     windowElement.addEventListener("mousedown", function () {
         focusWindow(windowElement);
     });
-
 });
 
-
 // OPEN BUTTONS
-
 document.querySelectorAll("[data-open]").forEach(function (button) {
-
     button.addEventListener("click", function () {
         openWindow(button.dataset.open);
     });
-
 });
-
 
 // CLOSE BUTTONS
-
 document.querySelectorAll("[data-close]").forEach(function (button) {
-
     button.addEventListener("click", function (event) {
-
         event.stopPropagation();
-
         closeWindow(button.dataset.close);
-
     });
-
 });
 
-
 // DRAGGING
-
 windows.forEach(function (windowElement) {
-
-    const header =
-        windowElement.querySelector(".window-header");
-
-    if (!header) {
-        return;
-    }
+    const header = windowElement.querySelector(".window-header");
+    if (!header) return;
 
     let moving = false;
     let oldX = 0;
     let oldY = 0;
 
-
     header.addEventListener("mousedown", function (event) {
-
-        if (event.target.closest(".close-button")) {
-            return;
-        }
+        if (event.target.closest(".close-button")) return;
 
         moving = true;
-
         oldX = event.clientX;
         oldY = event.clientY;
-
         focusWindow(windowElement);
-
         document.addEventListener("mousemove", moveWindow);
         document.addEventListener("mouseup", stopMoving);
-
     });
 
-
     function moveWindow(event) {
-
-        if (!moving) {
-            return;
-        }
+        if (!moving) return;
 
         const x = event.clientX - oldX;
         const y = event.clientY - oldY;
-
-        windowElement.style.left =
-            windowElement.offsetLeft + x + "px";
-
-        windowElement.style.top =
-            windowElement.offsetTop + y + "px";
-
+        windowElement.style.left = windowElement.offsetLeft + x + "px";
+        windowElement.style.top = windowElement.offsetTop + y + "px";
         oldX = event.clientX;
         oldY = event.clientY;
     }
 
-
     function stopMoving() {
-
         moving = false;
-
         document.removeEventListener("mousemove", moveWindow);
         document.removeEventListener("mouseup", stopMoving);
-
     }
-
 });
 
-
 // TASK MANAGER
-
 const taskNames = {
     welcomeWindow: "Welcome",
     terminalWindow: "YSH Terminal",
     notesWindow: "Notes",
-    browserWindow: "Browser",
+    browserWindow: "Arc - Browser",
     taskManagerWindow: "Task Manager"
 };
 
-
 function updateTaskManager() {
-
-    const taskBody =
-        document.getElementById("taskManagerBody");
-
-    if (!taskBody) {
-        return;
-    }
+    const taskBody = document.getElementById("taskManagerBody");
+    if (!taskBody) return;
 
     taskBody.innerHTML = "";
-
     windows.forEach(function (windowElement) {
-
-        if (windowElement.style.display === "none") {
-            return;
-        }
+        if (windowElement.style.display === "none") return;
 
         const row = document.createElement("tr");
-
         const name = document.createElement("td");
-        name.textContent =
-            taskNames[windowElement.id] || windowElement.id;
-
         const status = document.createElement("td");
+        const action = document.createElement("td");
+        name.textContent = taskNames[windowElement.id] || windowElement.id;
         status.textContent = "Running";
 
-        const action = document.createElement("td");
-
-        const button = document.createElement("button");
-        button.textContent = "Focus";
-
-        button.addEventListener("click", function () {
+        const focusButton = document.createElement("button");
+        focusButton.textContent = "Focus";
+        focusButton.addEventListener("click", function () {
             focusWindow(windowElement);
         });
+        action.appendChild(focusButton);
 
-        action.appendChild(button);
+        if (windowElement.id !== "taskManagerWindow") {
+            const endButton = document.createElement("button");
+            endButton.textContent = "End Task";
+            endButton.addEventListener("click", function () {
+                closeWindow(windowElement.id);
+            });
+            action.appendChild(endButton);
+        }
 
         row.appendChild(name);
         row.appendChild(status);
         row.appendChild(action);
-
         taskBody.appendChild(row);
-
     });
 }
 
-
 // TERMINAL
-
-const terminalInput =
-    document.getElementById("terminalInput");
-
-const terminalOutput =
-    document.getElementById("terminalOutput");
-
+const terminalInput = document.getElementById("terminalInput");
+const terminalOutput = document.getElementById("terminalOutput");
 
 function printTerminal(text) {
-
     const line = document.createElement("div");
-
     line.textContent = text;
-
     terminalOutput.appendChild(line);
-
-    terminalOutput.scrollTop =
-        terminalOutput.scrollHeight;
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
 }
 
-
 terminalInput.addEventListener("keydown", function (event) {
-
-    if (event.key !== "Enter") {
-        return;
-    }
+    if (event.key !== "Enter") return;
+    event.preventDefault();
 
     const text = terminalInput.value.trim();
-
     terminalInput.value = "";
+    if (!text) return;
 
-    if (text === "") {
-        return;
-    }
-
-    printTerminal(
-        (userName || "user").toLowerCase() +
-        "@ysh:~$ " +
-        text
-    );
-
-    const parts = text.split(" ");
+    printTerminal((userName || "user").toLowerCase() + "@ysh:~$ " + text);
+    const parts = text.split(/\s+/);
     const command = parts[0].toLowerCase();
     const argument = parts.slice(1).join(" ");
 
+    if (command === "help") printTerminal("help  clear  date  time  whoami  ver  about  echo open run");
+    else if (command === "clear") terminalOutput.innerHTML = "";
+    else if (command === "date") printTerminal(new Date().toLocaleDateString());
+    else if (command === "time") printTerminal(new Date().toLocaleTimeString());
+    else if (command === "whoami") printTerminal(userName || "User");
+    else if (command === "ver") printTerminal("YSH OS WebOS 2.0");
+    else if (command === "about") printTerminal("YSH OS WebOS - YSH running in a browser.");
+    else if (command === "echo") printTerminal(argument);
+    else if (command === "open" || command === "run") {
+        const target = argument.toLowerCase();
 
-    if (command === "help") {
+        const apps = {
+            terminal: "terminalWindow",
+            notes: "notesWindow",
+            browser: "browserWindow",
+            arc: "browserWindow",
+            pulse: "pulseWindow",
+            taskmanager: "taskManagerWindow"
+        };
 
-        printTerminal(
-            "help  clear  date  time  whoami  ver  about  echo"
-        );
-
-    } else if (command === "clear") {
-
-        terminalOutput.innerHTML = "";
-
-    } else if (command === "date") {
-
-        printTerminal(new Date().toLocaleDateString());
-
-    } else if (command === "time") {
-
-        printTerminal(new Date().toLocaleTimeString());
-
-    } else if (command === "whoami") {
-
-        printTerminal(userName || "User");
-
-    } else if (command === "ver") {
-
-        printTerminal("YSH OS WebOS 1.0");
-
-    } else if (command === "about") {
-
-        printTerminal("YSH OS - YSH running in a browser.");
-
-    } else if (command === "echo") {
-
-        printTerminal(argument);
-
-    } else {
-
-        printTerminal("Command not found: " + command);
-
+        if (apps[target]) {
+            openWindow(apps[target]);
+            printTerminal("Opened " + target);
+        } else {
+            printTerminal("App not found: " + argument);
+            printTerminal("Apps: terminal, notes, browser, arc, pulse, taskmanager");
+        }
     }
-
+    else printTerminal("Command not found: " + command);
 });
-
 
 // NOTES
-
-const notesArea =
-    document.getElementById("notesArea");
-
-notesArea.value =
-    localStorage.getItem("yshNotes") || "";
-
+const notesArea = document.getElementById("notesArea");
+notesArea.value = localStorage.getItem("yshNotes") || "";
 notesArea.addEventListener("input", function () {
-
-    localStorage.setItem(
-        "yshNotes",
-        notesArea.value
-    );
-
+    localStorage.setItem("yshNotes", notesArea.value);
 });
 
+// PULSE: NASA APOD
+const pulseRefresh = document.getElementById("pulseRefresh");
+const pulseStatus = document.getElementById("pulseStatus");
+const pulseTitle = document.getElementById("pulseTitle");
+const pulseDate = document.getElementById("pulseDate");
+const pulseMedia = document.getElementById("pulseMedia");
+const pulseExplanation = document.getElementById("pulseExplanation");
+
+async function loadPulse() {
+    pulseStatus.textContent = "Loading NASA's picture of the day...";
+    pulseTitle.textContent = "";
+    pulseDate.textContent = "";
+    pulseMedia.innerHTML = "";
+    pulseExplanation.textContent = "";
+
+    try {
+        const response = await fetch(
+            "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                response.status === 429
+                    ? "NASA API rate limit reached. Try again later."
+                    : response.status === 500
+                        ? "NASA APOD server error. Try again later."
+                        : "NASA API error: " + response.status
+            );
+        }
+
+        const data = await response.json();
+
+        pulseStatus.textContent = "";
+        pulseTitle.textContent = data.title || "NASA APOD";
+        pulseDate.textContent = data.date || "";
+
+        if (data.media_type === "image" && data.url) {
+            const image = document.createElement("img");
+            image.src = data.url;
+            image.alt = data.title || "NASA astronomy picture";
+            pulseMedia.appendChild(image);
+        } 
+        else if (data.media_type === "video" && data.url) {
+            const link = document.createElement("a");
+            link.href = data.url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "Watch today's NASA video";
+            pulseMedia.appendChild(link);
+        }
+
+        pulseExplanation.textContent = data.explanation || "";
+    } catch (error) {
+        pulseStatus.textContent = error.message + " Try Refresh later.";
+    }
+}
+
+pulseRefresh.addEventListener("click", loadPulse);
+loadPulse();
 
 // BROWSER
-
-const browserForm =
-    document.getElementById("browserForm");
-
-const browserInput =
-    document.getElementById("browserInput");
-
-const browserFrame =
-    document.getElementById("browserFrame");
-
-const browserNewTab =
-    document.getElementById("browserNewTab");
-
+const browserForm = document.getElementById("browserForm");
+const browserInput = document.getElementById("browserInput");
+const browserFrame = document.getElementById("browserFrame");
+const browserNewTab = document.getElementById("browserNewTab");
 
 browserForm.addEventListener("submit", function (event) {
-
     event.preventDefault();
-
     const query = browserInput.value.trim();
+    if (!query) return;
 
-    if (query === "") {
-        return;
-    }
-
-    browserFrame.src =
-        "https://www.google.com/search?igu=1&q=" +
-        encodeURIComponent(query);
-
+    browserFrame.src = "https://www.google.com/search?igu=1&q=" + encodeURIComponent(query);
 });
-
 
 browserNewTab.addEventListener("click", function () {
-
-    const query =
-        browserInput.value.trim() || "Google";
-
-    window.open(
-        "https://www.google.com/search?q=" +
-        encodeURIComponent(query),
-        "_blank"
-    );
-
+    const query = browserInput.value.trim() || "Google";
+    window.open("https://www.google.com/search?q=" + encodeURIComponent(query), "_blank");
 });
 
-
 // START
-
 openWindow("welcomeWindow");
-
 updateTaskManager();

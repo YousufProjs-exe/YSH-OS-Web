@@ -16,13 +16,8 @@
     <!-- WIDGET -->
     <div class="topbar">
 
-        <span class="user-pill" id="userName">
-            User - NPC
-        </span>
-
-        <span class="os-pill">
-            YSH OS
-        </span>
+        <span class="user-pill" id="userName">User - NPC</span>
+        <span class="os-pill">YSH OS</span>
 
         <span class="time-pill" id="timeElement">
             timme
@@ -38,6 +33,10 @@
 
         <button type="button" data-open="terminalWindow">
             YSH - Terminal
+        </button>
+
+        <button type="button" data-open="pulseWindow">
+            Pulse
         </button>
 
         <button type="button" data-open="notesWindow">
@@ -133,7 +132,7 @@
 
         <div class="window-header" id="browserWindowheader">
 
-            <span>Browser</span>
+            <span>Arc - Browser</span>
 
             <button class="close-button" type="button" data-close="browserWindow">
                 ×
@@ -162,6 +161,26 @@
 
         </div>
 
+    </section>
+
+    <!-- PULSE -->
+    <section class="window pulse-window" id="pulseWindow">
+        
+        <div class="window-header">
+            <span>Pulse - NASA APOD</span>
+            <button class="close-button" type="button" data-close="pulseWindow">×</button>
+        </div>
+        <div class="pulse-content">
+            <div class="pulse-toolbar">
+                <span>NASA Astronomy Picture of the Day</span>
+                <button type="button" id="pulseRefresh">Refresh</button>
+            </div>
+            <p id="pulseStatus">Loading today's astronomy picture...</p>
+            <h2 id="pulseTitle"></h2>
+            <p id="pulseDate"></p>
+            <div id="pulseMedia"></div>
+            <p id="pulseExplanation"></p>
+        </div>
     </section>
 
     <!-- TASK MANAGER -->
