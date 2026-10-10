@@ -321,7 +321,10 @@ function applySettings() {
         document.body.style.backgroundImage = "none";
         document.body.style.backgroundColor = color;
     } else if (wallpaper === "space") {
-        document.body.style.backgroundImage = 'url("images/space.jpg")';
+        document.body.style.backgroundImage = 'url("images/space.png")';
+        document.body.style.backgroundColor = "#050505";
+    } else if (wallpaper === "blackhole") {
+        document.body.style.backgroundImage = 'url("images/blackhole.jpg")';
         document.body.style.backgroundColor = "#050505";
     } else {
         document.body.style.backgroundImage = 'url("images/OS background.png")';
