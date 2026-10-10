@@ -139,9 +139,11 @@ windows.forEach(function (windowElement) {
 const taskNames = {
     welcomeWindow: "Welcome",
     terminalWindow: "YSH Terminal",
+    systemSettingsWindow: "System Settings",
     notesWindow: "Notes",
     browserWindow: "Arc - Browser",
-    taskManagerWindow: "Task Manager"
+    taskManagerWindow: "Task Manager",
+    calculatorWindow: "Calculator"
 };
 
 function updateTaskManager() {
@@ -307,13 +309,16 @@ loadPulse();
 // SYSTEM SETTINGS
 const wallpaperSelect = document.getElementById("wallpaperSelect");
 const themeSelect = document.getElementById("themeSelect");
+const solidColor = document.getElementById("solidColor");
 
 function applySettings() {
     const wallpaper = localStorage.getItem("yshWallpaper") || "default";
     const theme = localStorage.getItem("yshTheme") || "dark";
+    const color = localStorage.getItem("yshSolidColor") || "#050505";
 
     wallpaperSelect.value = wallpaper;
     themeSelect.value = theme;
+    solidColor.value = color;
 
     document.body.classList.toggle("light-theme", theme === "light");
 
@@ -374,6 +379,162 @@ browserNewTab.addEventListener("click", function () {
     const query = browserInput.value.trim() || "Google";
     window.open("https://www.google.com/search?q=" + encodeURIComponent(query), "_blank");
 });
+
+// CALCULATOR 
+const calculatorDisplay = document.getElementById("calculatorDisplay");
+const calculatorWindow = document.getElementById("calculatorWindow");
+
+if (calculatorDisplay && calculatorWindow) {
+    let currentInput = "0";
+    let storedValue = null;
+    let pendingOperator = null;
+    let resetInput = false;
+
+    function updateCalculatorDisplay() {
+        calculatorDisplay.value = currentInput;
+    }
+
+    function enterDigit(digit) {
+        if (resetInput || currentInput === "Error") {
+            currentInput = digit;
+            resetInput = false;
+        } else if (currentInput === "0") {
+            currentInput = digit;
+        } else if (currentInput.length < 16) {
+            currentInput += digit;
+        }
+        updateCalculatorDisplay();
+    }
+
+    function enterDecimal() {
+        if (resetInput || currentInput === "Error") {
+            currentInput = "0";
+            resetInput = false;
+        }
+        if (!currentInput.includes(".")) {
+            currentInput += ".";
+        }
+        updateCalculatorDisplay();
+    }
+
+    function calculate(a, operator, b) {
+        switch (operator) {
+            case "+": return a + b;
+            case "-": return a - b;
+            case "*": return a * b;
+            case "/": return b === 0 ? null : a / b;
+            default: return b;
+        }
+    }
+
+    function formatResult(value) {
+        if (value === null || !Number.isFinite(value)) return "Error";
+        return String(Number(value.toPrecision(12)));
+    }
+
+    function chooseOperator(operator) {
+        const value = Number(currentInput);
+        if (!Number.isFinite(value)) return;
+
+        if (pendingOperator && !resetInput && storedValue !== null) {
+            const result = calculate(storedValue, pendingOperator, value);
+            currentInput = formatResult(result);
+            storedValue = result;
+        } else {
+            storedValue = value;
+        }
+
+        pendingOperator = currentInput === "Error" ? null : operator;
+        resetInput = true;
+        updateCalculatorDisplay();
+    }
+
+    function calculateResult() {
+        if (pendingOperator === null || storedValue === null) return;
+
+        const result = calculate(
+            storedValue,
+            pendingOperator,
+            Number(currentInput)
+        );
+
+        currentInput = formatResult(result);
+        storedValue = null;
+        pendingOperator = null;
+        resetInput = true;
+        updateCalculatorDisplay();
+    }
+
+    function clearCalculator() {
+        currentInput = "0";
+        storedValue = null;
+        pendingOperator = null;
+        resetInput = false;
+        updateCalculatorDisplay();
+    }
+
+    function backspaceCalculator() {
+        if (resetInput || currentInput === "Error") {
+            currentInput = "0";
+            resetInput = false;
+        } else {
+            currentInput = currentInput.length > 1
+                ? currentInput.slice(0, -1)
+                : "0";
+
+            if (currentInput === "-") currentInput = "0";
+        }
+        updateCalculatorDisplay();
+    }
+
+    function toggleSign() {
+        if (currentInput === "0" || currentInput === "Error") return;
+        currentInput = currentInput.startsWith("-")
+            ? currentInput.slice(1)
+            : "-" + currentInput;
+        updateCalculatorDisplay();
+    }
+
+    calculatorWindow.querySelectorAll("[data-calc]").forEach(button => {
+        button.addEventListener("click", () => {
+            const action = button.dataset.calc;
+            const value = button.dataset.value;
+
+            if (action === "digit") enterDigit(value);
+            else if (action === "decimal") enterDecimal();
+            else if (action === "operator") chooseOperator(value);
+            else if (action === "equals") calculateResult();
+            else if (action === "clear") clearCalculator();
+            else if (action === "backspace") backspaceCalculator();
+            else if (action === "sign") toggleSign();
+        });
+    });
+
+    document.addEventListener("keydown", event => {
+        if (calculatorWindow.style.display === "none") return;
+
+        // Avoid intercepting shortcuts while typing in other inputs.
+        if (event.target.matches("input, textarea, select")) return;
+
+        if (/^[0-9]$/.test(event.key)) enterDigit(event.key);
+        else if (event.key === ".") enterDecimal();
+        else if (["+", "-", "*", "/"].includes(event.key)) {
+            chooseOperator(event.key);
+        } else if (event.key === "Enter" || event.key === "=") {
+            calculateResult();
+        } else if (event.key === "Backspace") {
+            backspaceCalculator();
+        } else if (event.key === "Escape") {
+            clearCalculator();
+        } else {
+            return;
+        }
+
+        event.preventDefault();
+    });
+
+    updateCalculatorDisplay();
+}
 
 // START
 openWindow("welcomeWindow");

@@ -51,6 +51,8 @@
             ARC - Browser
         </button>
 
+        <button type="button" data-open="calculatorWindow">Calculator</button>
+
         <button type="button" data-open="taskManagerWindow">
             Task Manager
         </button>
@@ -257,6 +259,53 @@
             </table>
         </div>
     </section>
+
+    <!-- CALCULATOR -->
+    <section class="window calculator-window" id="calculatorWindow">
+        <div class="window-header">
+            <span>Calculator</span>
+            <button class="close-button" type="button"
+                    data-close="calculatorWindow">×</button>
+        </div>
+
+        <div class="window-content calculator-content">
+            <input
+                type="text"
+                id="calculatorDisplay"
+                class="calculator-display"
+                value="0"
+                readonly
+                aria-label="Calculator display"
+            >
+
+            <div class="calculator-buttons">
+                <button data-calc="clear">C</button>
+                <button data-calc="backspace">⌫</button>
+                <button data-calc="operator" data-value="/">÷</button>
+                <button data-calc="operator" data-value="*">×</button>
+
+                <button data-calc="digit" data-value="7">7</button>
+                <button data-calc="digit" data-value="8">8</button>
+                <button data-calc="digit" data-value="9">9</button>
+                <button data-calc="operator" data-value="-">−</button>
+
+                <button data-calc="digit" data-value="4">4</button>
+                <button data-calc="digit" data-value="5">5</button>
+                <button data-calc="digit" data-value="6">6</button>
+                <button data-calc="operator" data-value="+">+</button>
+
+                <button data-calc="digit" data-value="1">1</button>
+                <button data-calc="digit" data-value="2">2</button>
+                <button data-calc="digit" data-value="3">3</button>
+                <button data-calc="equals" class="equals-button">=</button>
+
+                <button data-calc="sign">±</button>
+                <button data-calc="digit" data-value="0">0</button>
+                <button data-calc="decimal">.</button>
+            </div>
+        </div>
+    </section>
+
 
 <script src="desktop.js"></script>
 
