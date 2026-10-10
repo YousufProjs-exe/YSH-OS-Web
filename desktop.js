@@ -139,9 +139,10 @@ windows.forEach(function (windowElement) {
 const taskNames = {
     welcomeWindow: "Welcome",
     terminalWindow: "YSH Terminal",
-    systemSettingsWindow: "System Settings",
+    settingsWindow: "System Settings",
     notesWindow: "Notes",
     browserWindow: "Arc - Browser",
+    pulseWindow: "Pulse",
     taskManagerWindow: "Task Manager",
     calculatorWindow: "Calculator"
 };
@@ -225,7 +226,8 @@ terminalInput.addEventListener("keydown", function (event) {
             browser: "browserWindow",
             arc: "browserWindow",
             pulse: "pulseWindow",
-            taskmanager: "taskManagerWindow"
+            taskmanager: "taskManagerWindow",
+            calculator: "calculatorWindow"
         };
 
         if (apps[target]) {

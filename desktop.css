@@ -394,6 +394,8 @@ body.light-theme .terminal-content {
 }
 
 .calculator-window {
+    top: 100px;
+    left: 100px;
     width: 320px;
     min-width: 280px;
 }
