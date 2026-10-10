@@ -304,6 +304,55 @@ async function loadPulse() {
 pulseRefresh.addEventListener("click", loadPulse);
 loadPulse();
 
+// SYSTEM SETTINGS
+const wallpaperSelect = document.getElementById("wallpaperSelect");
+const themeSelect = document.getElementById("themeSelect");
+
+function applySettings() {
+    const wallpaper = localStorage.getItem("yshWallpaper") || "default";
+    const theme = localStorage.getItem("yshTheme") || "dark";
+
+    wallpaperSelect.value = wallpaper;
+    themeSelect.value = theme;
+
+    document.body.classList.toggle("light-theme", theme === "light");
+
+    if (wallpaper === "solid") {
+        document.body.style.backgroundImage = "none";
+        document.body.style.backgroundColor = color;
+    } else if (wallpaper === "space") {
+        document.body.style.backgroundImage = 'url("images/space.jpg")';
+        document.body.style.backgroundColor = "#050505";
+    } else {
+        document.body.style.backgroundImage = 'url("images/OS background.png")';
+        document.body.style.backgroundColor = "#050505";
+    }
+
+}
+
+solidColor.addEventListener("input", function () {
+    const color = solidColor.value;
+
+    localStorage.setItem("yshSolidColor", color);
+
+    if (wallpaperSelect.value === "solid") {
+        document.body.style.backgroundImage = "none";
+        document.body.style.backgroundColor = color;
+    }
+});
+
+wallpaperSelect.addEventListener("change", function () {
+    localStorage.setItem("yshWallpaper", wallpaperSelect.value);
+    applySettings();
+});
+
+themeSelect.addEventListener("change", function () {
+    localStorage.setItem("yshTheme", themeSelect.value);
+    applySettings();
+});
+
+applySettings();
+
 // BROWSER
 const browserForm = document.getElementById("browserForm");
 const browserInput = document.getElementById("browserInput");

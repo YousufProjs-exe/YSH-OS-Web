@@ -34,6 +34,10 @@
         <button type="button" data-open="terminalWindow">
             YSH - Terminal
         </button>
+        
+        <button type="button" data-open="settingsWindow">
+            System Settings
+        </button>
 
         <button type="button" data-open="pulseWindow">
             Pulse
@@ -180,6 +184,35 @@
             <p id="pulseDate"></p>
             <div id="pulseMedia"></div>
             <p id="pulseExplanation"></p>
+        </div>
+    </section>
+    
+    <!-- SYSTEM SETTINGS -->
+    <section class="window settings-window" id="settingsWindow">
+        <div class="window-header">
+            <span>System Settings</span>
+            <button class="close-button" type="button" data-close="settingsWindow">×</button>
+        </div>
+        <div class="window-content">
+            <h2>Appearance</h2>
+            
+            <label for="wallpaperSelect">Wallpaper</label>
+            <select id="wallpaperSelect">
+                <option value="default">Default Wallpaper</option>
+                <option value="space">Space</option>
+                <option value="solid">Solid Color</option>
+            </select>
+            
+            <label for="solidColor">Background Color</label>
+            <input type="color" id="solidColor" value="#050505">
+            
+            <br><br>
+            <label for="themeSelect">Theme</label>
+            <select id="themeSelect">
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+            </select>
+            <p id="settingsStatus">Settings save automatically.</p>
         </div>
     </section>
 
