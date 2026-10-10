@@ -43,6 +43,10 @@
             Pulse
         </button>
 
+        <button type="button" data-open="calendarWindow">
+            Calendar
+        </button>
+
         <button type="button" data-open="notesWindow">
             Notes
         </button>
@@ -51,7 +55,9 @@
             ARC - Browser
         </button>
 
-        <button type="button" data-open="calculatorWindow">Calculator</button>
+        <button type="button" data-open="calculatorWindow">
+            Cool Calculator
+        </button>
 
         <button type="button" data-open="taskManagerWindow">
             Task Manager
@@ -306,7 +312,27 @@
         </div>
     </section>
 
+    <!-- CALENDAR -->
+    <section class="window calendar-window" id="calendarWindow">
+        <div class="window-header">
+            <span>Calendar</span>
+            <button class="close-button" type="button"
+                    data-close="calendarWindow">×</button>
+        </div>
 
+        <div class="window-content calendar-content">
+            <div class="calendar-toolbar">
+                <button type="button" id="calendarPrev">←</button>
+                <h2 id="calendarMonth"></h2>
+                <button type="button" id="calendarNext">→</button>
+            </div>
+
+            <p id="calendarToday"></p>
+
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+    </section>
+    
 <script src="desktop.js"></script>
 
 </body>

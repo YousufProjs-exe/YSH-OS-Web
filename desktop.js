@@ -144,7 +144,8 @@ const taskNames = {
     browserWindow: "Arc - Browser",
     pulseWindow: "Pulse",
     taskManagerWindow: "Task Manager",
-    calculatorWindow: "Calculator"
+    calculatorWindow: "Calculator",
+    calendarWindow: "Calendar"
 };
 
 function updateTaskManager() {
@@ -227,7 +228,8 @@ terminalInput.addEventListener("keydown", function (event) {
             arc: "browserWindow",
             pulse: "pulseWindow",
             taskmanager: "taskManagerWindow",
-            calculator: "calculatorWindow"
+            calculator: "calculatorWindow",
+            calendar: "calendarWindow"
         };
 
         if (apps[target]) {
@@ -235,7 +237,7 @@ terminalInput.addEventListener("keydown", function (event) {
             printTerminal("Opened " + target);
         } else {
             printTerminal("App not found: " + argument);
-            printTerminal("Apps: terminal, notes, browser, arc, pulse, taskmanager");
+            printTerminal("Apps: terminal, notes, browser, arc, pulse, taskmanager, calculator, calendar");
         }
     }
     else printTerminal("Command not found: " + command);
@@ -537,6 +539,76 @@ if (calculatorDisplay && calculatorWindow) {
 
     updateCalculatorDisplay();
 }
+
+// CALENDAR
+const calendarGrid = document.getElementById("calendarGrid");
+const calendarMonth = document.getElementById("calendarMonth");
+const calendarToday = document.getElementById("calendarToday");
+const calendarPrev = document.getElementById("calendarPrev");
+const calendarNext = document.getElementById("calendarNext");
+
+let calendarDate = new Date();
+
+function renderCalendar() {
+    const year = calendarDate.getFullYear();
+    const month = calendarDate.getMonth();
+
+    calendarMonth.textContent = calendarDate.toLocaleDateString(
+        undefined,
+        { month: "long", year: "numeric" }
+    );
+
+    calendarToday.textContent = "Today: " + new Date().toLocaleDateString();
+
+    calendarGrid.innerHTML = "";
+
+    const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    weekdays.forEach(day => {
+        const cell = document.createElement("div");
+        cell.className = "calendar-day calendar-weekday";
+        cell.textContent = day;
+        calendarGrid.appendChild(cell);
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement("div");
+        emptyCell.className = "calendar-day empty";
+        calendarGrid.appendChild(emptyCell);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement("div");
+        cell.className = "calendar-day";
+        cell.textContent = day;
+
+        if (
+            day === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+        ) {
+            cell.classList.add("today");
+        }
+
+        calendarGrid.appendChild(cell);
+    }
+}
+
+calendarPrev.addEventListener("click", () => {
+    calendarDate.setMonth(calendarDate.getMonth() - 1);
+    renderCalendar();
+});
+
+calendarNext.addEventListener("click", () => {
+    calendarDate.setMonth(calendarDate.getMonth() + 1);
+    renderCalendar();
+});
+
+renderCalendar();
 
 // START
 openWindow("welcomeWindow");
